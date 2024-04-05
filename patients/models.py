@@ -2,16 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-# class Allergy(models.Model):
-#     nameAllergy = models.CharField()
-#     descriptionAllergiy = models.TextField()
-
-
-# class Diseases(models.Model):
-#     nameDisease = models.CharField()
-#     descriptionDisease = models.TextField()
-
-
 class Patient (models.Model):
 
     SEX_CHOICES = [
@@ -22,8 +12,9 @@ class Patient (models.Model):
     lastName = models.CharField(max_length=150, verbose_name="apellidos")
     birthDate = models.DateField(verbose_name="fecha_nacimiento")
     identification = models.TextField(
-        max_length=10, verbose_name="cedula_identidad")
+        max_length=10, unique=True, verbose_name="cedula_identidad")
     address = models.TextField(verbose_name="direccion")
+    email= models.EmailField(verbose_name='correo_paciente' )
     phone = models.CharField(max_length=15, verbose_name='telefono')
     sex = models.CharField(max_length=12, choices=SEX_CHOICES,
                            default="", verbose_name="sexo")
@@ -47,11 +38,10 @@ class Medical_Historial(models.Model):
     diseases = models.TextField(verbose_name="enfermedades_preexistentes")
     medicines = models.TextField(verbose_name="medicinas_actuales")
     pregnant = models.BooleanField(verbose_name="embarazo")
-    
-    
-    def __str__(self) :
+
+    def __str__(self):
         return self.patient
-    
+
     class Meta:
         verbose_name = 'Medical_historial'
         verbose_name_plural = 'Medical_historials'
