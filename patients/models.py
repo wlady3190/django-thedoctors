@@ -14,7 +14,7 @@ class Patient (models.Model):
     identification = models.TextField(
         max_length=10, unique=True, verbose_name="cedula_identidad")
     address = models.TextField(verbose_name="direccion")
-    email= models.EmailField(verbose_name='correo_paciente' )
+    email= models.EmailField(verbose_name='correo_paciente', default='example@email.com' )
     phone = models.CharField(max_length=15, verbose_name='telefono')
     sex = models.CharField(max_length=12, choices=SEX_CHOICES,
                            default="", verbose_name="sexo")

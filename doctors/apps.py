@@ -6,4 +6,4 @@ class DoctorsConfig(AppConfig):
     name = 'doctors'
 
     def ready(self):
-        pass
+        import doctors.signals

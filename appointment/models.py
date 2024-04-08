@@ -96,8 +96,8 @@ class Appointment(models.Model):
 
     class Meta:
         # ordering = ['patient, created']
-        verbose_name = 'Treatment'
-        verbose_name_plural = 'Treatments'
+        verbose_name = 'Appointment'
+        verbose_name_plural = 'Appointments'
 
     def __str__(self):
         return self.patient
