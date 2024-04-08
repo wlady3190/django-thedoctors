@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from doctors import  views as auth_views
+from doctors import  views as user_views
+from django.contrib.auth import views as auth_views
 
 from homepage import  views as home_view
 
@@ -26,8 +27,8 @@ from homepage import  views as home_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view.home, name='homepage' ),
-    #path('login/', auth_views.register, name='register'),
-    path('register/', auth_views.register, name = 'register' ),
+    path('register/', user_views.register, name = 'register' ),
+    path('login/', auth_views.LoginView.as_view(template_name = 'doctors/login.html'), name='login'),
 ]
 
 if settings.DEBUG:
