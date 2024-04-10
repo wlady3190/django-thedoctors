@@ -1,5 +1,5 @@
 from django.db import models
-from doctors.models import Doctor
+from doctors.models import Profile
 from patients.models import Patient
 
 from django.core.validators import MinValueValidator
@@ -20,7 +20,7 @@ class PositiveDecimalField(models.DecimalField):
 
 class Vital_sign (models.Model):
     blood_pressure = models.CharField(
-        max_length=7, verbose_name='presion_arterial')
+        max_length=7, verbose_name='presion_arterial', default=0)
     heart_rate = models.PositiveSmallIntegerField(
         default=0,  verbose_name='frecuencia_cardiaca')
     temperature = PositiveDecimalField(default=0.0, verbose_name='temperatura', decimal_places=1, max_digits=3)
@@ -41,7 +41,7 @@ class Diagnosis(models.Model):
         ('PRE', 'presuntivo'),
         ('DEF', 'definitivo')]
     diagnosis_type = models.CharField(
-        choices=DIAGNOSIS_TYPE, verbose_name='diagnostico_tipo')
+        choices=DIAGNOSIS_TYPE, verbose_name='diagnostico_tipo', max_length=25)
     cie10_code = models.CharField(
         max_length=4, verbose_name='codigo_cie_10_odontologico')
     description = models.TextField(verbose_name='diagnostico_descripcion')
@@ -81,10 +81,10 @@ class Treatment(models.Model):
 
 class Appointment(models.Model):
     doctor = models.ForeignKey(
-        Doctor, on_delete=models.CASCADE, verbose_name='doctor_cita')
+        Profile, on_delete=models.CASCADE, verbose_name='doctor_cita')
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE, verbose_name='paciente_cita')
-    vital_signs = models.OneToOneField(Vital_sign, on_delete=models.CASCADE, verbose_name='signos_vitales')
+    vital_signs = models.OneToOneField(Vital_sign, on_delete=models.CASCADE, default=0)
     diagnosis = models.ForeignKey(
         Diagnosis, on_delete=models.CASCADE, verbose_name='diagnostico_cita')
     treatment = models.ForeignKey(

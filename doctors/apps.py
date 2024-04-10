@@ -5,5 +5,5 @@ class DoctorsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'doctors'
 
-    def ready(self):
-        import doctors.signals
+    # def ready(self):
+    #     import doctors.signals

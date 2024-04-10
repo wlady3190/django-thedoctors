@@ -1,23 +1,24 @@
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import date
-
+from django.db.models.signals import post_save
 from PIL import Image
+from django.dispatch import receiver
+from django.utils.text import slugify
 
 
-class Doctor (models.Model):
+class Profile (models.Model):
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, verbose_name='usuario_doctor', primary_key=True, db_column='id', default=0)
-    name = models.CharField(max_length=150, verbose_name="nombres_doctor")
-    lastName = models.CharField(
-        max_length=150, verbose_name="apellidos_doctor")
-    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default= date.today)
-    identification = models.TextField(
-        max_length=10, verbose_name="cedula_identidad_doctor")
+        User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, verbose_name='nombres_doctor')
+    last_name = models.CharField(max_length=50, verbose_name='apellido_doctor')
+    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default=date.today)
+    identification = models.CharField(
+        max_length=15, verbose_name="cedula_identidad_doctor")
     registryCode = models.CharField(
         max_length=20, verbose_name="codigo_registro_doctor")
-    address = models.TextField(verbose_name="direccion_doctor")
+    address = models.CharField(verbose_name="direccion_doctor", max_length=200)
     phone = models.CharField(max_length=15, verbose_name='telefono_doctor')
     photo = models.ImageField(default='profile.png',
                               upload_to='user_profile')
@@ -33,9 +34,8 @@ class Doctor (models.Model):
         return f'{self.user} Profile'
 
     class Meta:
-        verbose_name = 'Doctor'
-        verbose_name_plural = 'Doctors'
-        ordering = ['lastName']
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
     # Ajustar tamaño de la imagen creada para que no sea muy grande
 
     def save(self, *args, **kwargs):
@@ -45,3 +45,32 @@ class Doctor (models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.photo.path)
+            
+    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    #     self.slug = slugify(self.name)
+    #     if update_fields is not None and "name" in update_fields:
+    #         update_fields = {"slug"}.union(update_fields)
+    #     super().save(
+    #         force_insert=force_insert,
+    #         force_update=force_update,
+    #         using=using,
+    #         update_fields=update_fields,
+    #         )
+            
+            
+            
+            
+            
+            
+            
+            
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.get_or_create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
