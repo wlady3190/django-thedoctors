@@ -76,7 +76,11 @@ class ProfileUpdateView (LoginRequiredMixin, UpdateView):
         return self.request.user.profile
 
     def get_success_url(self):
-        return reverse('dashboard') 
+        return reverse('profile') 
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Perfil actualizado correctamente')
+        return super().form_valid(form)
     
     # template_name = 'appointment/profile.html'
     # context_object_name = 'user'

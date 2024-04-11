@@ -4,24 +4,28 @@ from datetime import date
 from django.db.models.signals import post_save
 from PIL import Image
 from django.dispatch import receiver
-from django.utils.text import slugify
+
+
+
+# Regex para validar campos
+
 
 
 class Profile (models.Model):
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, verbose_name='nombres_doctor')
-    last_name = models.CharField(max_length=50, verbose_name='apellido_doctor')
-    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default=date.today)
+    first_name = models.CharField(max_length=50, verbose_name='nombres_doctor', blank=True)
+    last_name = models.CharField(max_length=50, verbose_name='apellido_doctor', blank=True)
+    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default=date.today, blank=True)
     identification = models.CharField(
-        max_length=15, verbose_name="cedula_identidad_doctor")
+        max_length=15, verbose_name="cedula_identidad_doctor", blank=True)
     registryCode = models.CharField(
-        max_length=20, verbose_name="codigo_registro_doctor")
-    address = models.CharField(verbose_name="direccion_doctor", max_length=200)
-    phone = models.CharField(max_length=15, verbose_name='telefono_doctor')
+        max_length=20, verbose_name="codigo_registro_doctor", blank=True)
+    address = models.CharField(verbose_name="direccion_doctor", max_length=200, blank=True)
+    phone = models.CharField(max_length=15, verbose_name='telefono_doctor', blank=True)
     photo = models.ImageField(default='profile.png',
-                              upload_to='user_profile')
+                              upload_to='user_profile', blank=True)
     created = models.DateTimeField(
         auto_now_add=True, verbose_name="fecha_creacion_doctor")
     updated = models.DateTimeField(
@@ -30,6 +34,8 @@ class Profile (models.Model):
 
 # a partir de esto se crea lo signasl para la creación correcta de perfiles
 
+    # def date_format_html(self):
+    #     return self.birthDate.strftime('%Y-%m-%d')
     def __str__(self):
         return f'{self.user} Profile'
 

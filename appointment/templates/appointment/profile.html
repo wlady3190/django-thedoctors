@@ -19,15 +19,114 @@
 {% load custom_filters %} 
 {% block content %}
 
+<div class="container">
 
-<form method="POST" enctype="multipart/form-data" action="">
-  {% csrf_token %}
+  {% if form.errors %}
+  <div class="alert alert-danger">
+    {% for _, errors in form.errors.items %}
+      {% for error in errors %}
+        {{ error }}
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %}
 
-  {{user_form}}
-  {{form}}
+  
+
+  
+  {% for message in messages %}
+
+  
+  {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+    </svg></button>
+  </div>
+  
+{% else %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Ups! Ha habido un error al actualizar</strong> 
+  <b><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+  </svg></button></b>
+</div>
+{% endif %}
+  
+{% endfor %}
+  
+  
+    <!-- {% for message in messages %}
+    <script>
+            Swal.fire({
+              icon: "{{message.tags}}",
+              title: "{{message}}",
+              text: "{{message.tags}}",
+              timer: 1500
+            });
+    </script>
+{% endfor %} -->
+
+  <form method="POST" enctype="multipart/form-data" id="section1">
+    {% csrf_token %}
+
+    <!-- {{form}} -->
+
+    <div class="form-group col-md-6 mb-2">
+      <label for="photo">Foto de perfil</label>
+      <br>
+      <img src="{{profile.photo.url}}" alt="image" class="mb-2" style="border-radius: 10px;"/>
+
+      <br />
+      <label >Actualizar foto</label>
+
+      {{form.photo|add_class:'form-control'}}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="name">Nombres</label>
+        {{form.first_name|add_class:'form-control'}}
+        <!-- <input type="text" id="name" value={{form.first_name.value}} class="form-control"> -->
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="lastname">Apellidos</label>
+        {{form.last_name|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="birthDate">Fecha de nacimiento (dd/mm/aaaa)</label>
+        {{form.birthDate|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="identificacion">Cédula / Pasaporte</label>
+        {{form.identification|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="registro">No. de Registro</label>
+        {{form.registryCode|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="direccion">Dirección</label>
+        {{form.address|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="telefono">Teléfono</label>
+        {{form.phone|add_class:'form-control'}}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
 
 
-  <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+</div>
+
 
 {% endblock content %}
