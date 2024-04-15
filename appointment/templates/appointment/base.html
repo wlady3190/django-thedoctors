@@ -30,7 +30,7 @@
       href="../assets/img/apple-icon.png"
     />
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
-    <title>Soft UI Dashboard by Creative Tim</title>
+    <title>Teeth Soft </title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -41,46 +41,36 @@
     <link href="{% static '/doctors/css/nucleo-icons.css' %}" rel="stylesheet" />
 
     <link href="{% static '/doctors/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <link href="{% static '/doctors/css/custom-styles.css' %}" rel="stylesheet" />
+
     <link href="{% static '/doctors/css/sweetalert2.min.css' %}" rel="stylesheet" />
 
+
     <!-- Font Awesome Icons -->
-    <script
-      src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontawesome5-fullcss@1.1.0/css/all.min.css">
+
     <!-- CSS Files -->
-    <link
-      id="pagestyle"
-      href="{% static 'doctors/css/soft-ui-dashboard.css' %}"
-  
-      rel="stylesheet"
-    />
+    <link id="pagestyle" href="{% static 'doctors/css/soft-ui-dashboard.css' %}" rel="stylesheet" />
+
+    
+    {% block css_extra %}
+      
+    {% endblock css_extra %}
         <!-- ../assets/css/soft-ui-dashboard.css?v=1.0.3 -->
   </head>
 
   <body class="g-sidenav-show bg-gray-100">
-    
-
-
-    <!-- Aside start -->
+        <!-- Aside start -->
     {% include 'appointment/aside.html' %}
-
-
-
     <!-- Aside end -->
 
     <main
       class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg"
     >
-
-    
-
-
       <!-- Navbar -->
       {% include 'appointment/navbar.html' %}
      <!-- End Navbar  -->
-
 
     {% block content %}      
     
@@ -103,6 +93,12 @@
     </script>
 {% endfor %} -->
 
+{% block js_extra %}
+      
+{% endblock js_extra %}
+    <!-- ! Script DataTable -->
+
+
     <script src="{%static '/doctors/js/core/popper.min.js'%}"></script>
     <script src="{%static '/doctors/js/core/bootstrap.min.js'%}"></script>
     <script src="{%static '/doctors/js/plugins/perfect-scrollbar.min.js'%}"></script>
@@ -111,7 +107,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- <script src="{%static '/doctors/js/sweetalert2.all.min.js'%}"></script> -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 
 
 

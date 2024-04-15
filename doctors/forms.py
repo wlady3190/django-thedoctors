@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 from core import settings
-from doctors.models import Profile
+from doctors.models import Doctor
+from .validators import letter_validator, numeric_validator
 
 
 #Formulario para creación de perfil de Doctor
@@ -45,8 +46,8 @@ class DateInput(forms.DateInput):
 class UserAndProfileUpdateForm(forms.ModelForm):
     # Campos del modelo de usuario (User)
     
-    numeric_validator = RegexValidator(r'^[0-9]*$', 'Identificación / teléfono: Ingresar solo números')
-    letter_validator = RegexValidator(r'^[A-Za-z]*$', 'Nombre / Apellido: Ingresar solo letras')
+    # numeric_validator = RegexValidator(r'^[0-9]*$', 'Identificación / teléfono: Ingresar solo números y sin espacios')
+    # letter_validator = RegexValidator(r'^[A-Za-z\s]*$', 'Nombre / Apellido: Ingresar solo letras')
 
     first_name = forms.CharField(max_length=50, validators=[letter_validator])
     last_name = forms.CharField(max_length=50, validators=[letter_validator])
@@ -60,5 +61,6 @@ class UserAndProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         widgets = {'my_date_field': DateInput()}
-        model = User
+        #! Este es el original model = User
+        model = Doctor
         fields = ['first_name', 'last_name', 'birthDate', 'identification', 'registryCode', 'address', 'phone', 'photo']

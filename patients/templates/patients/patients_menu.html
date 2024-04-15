@@ -1,0 +1,36 @@
+{% extends 'appointment/base.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+    
+
+    
+<div class="container text-center">
+
+
+  <!-- Primer botón con icono -->
+
+  <a href="{% url 'patient_new' %}">
+
+    <button class="btn btn-primary btn-lg">
+      <i class="bi bi-heart-fill"></i> Ver Pacientes
+    </button>
+  </a>
+  <a href="{% url 'patient_new' %}">
+
+    <button class="btn btn-primary btn-lg">
+      <i class="bi bi-heart-fill"></i> 
+    </button>
+  </a>
+
+  <!-- Segundo botón con icono -->
+  <button class="btn btn-danger btn-lg">
+    <i class="bi bi-star-fill"></i> Botón 2
+  </button>
+</div>
+
+
+  {% endblock content %}

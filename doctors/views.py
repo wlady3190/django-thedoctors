@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView, View
 
-from doctors.models import Profile
+from doctors.models import Doctor
 from .forms import   UserAndProfileUpdateForm, UserRegisterForm
 from django.contrib.auth.decorators import login_required
 
@@ -65,15 +65,13 @@ class SignUpView(CreateView):
 #     }
 #     return render(request, 'appointment/profile.html', context)
 
-
-
 class ProfileUpdateView (LoginRequiredMixin, UpdateView):
     template_name = 'appointment/profile.html'  # Reemplaza 'your_template.html' con el nombre de tu template
-    model = Profile
+    model = Doctor
     form_class = UserAndProfileUpdateForm  # Reemplaza 'ProfileUpdateForm' con el nombre de tu formulario de actualización
 
     def get_object(self, queryset=None):
-        return self.request.user.profile
+        return self.request.user.doctor
 
     def get_success_url(self):
         return reverse('profile') 

@@ -11,13 +11,13 @@ from django.dispatch import receiver
 
 
 
-class Profile (models.Model):
+class Doctor (models.Model):
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE)
+        User, on_delete=models.CASCADE, default= None )
     first_name = models.CharField(max_length=50, verbose_name='nombres_doctor', blank=True)
     last_name = models.CharField(max_length=50, verbose_name='apellido_doctor', blank=True)
-    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default=date.today, blank=True)
+    birthDate = models.DateField(verbose_name="fecha_nacimiento_doctor", default=date.today)
     identification = models.CharField(
         max_length=15, verbose_name="cedula_identidad_doctor", blank=True)
     registryCode = models.CharField(
@@ -37,15 +37,18 @@ class Profile (models.Model):
     # def date_format_html(self):
     #     return self.birthDate.strftime('%Y-%m-%d')
     def __str__(self):
-        return f'{self.user} Profile'
+        return f'{self.user} Doctor'
 
     class Meta:
-        verbose_name = 'Profile'
-        verbose_name_plural = 'Profiles'
+        verbose_name = 'Doctor'
+        verbose_name_plural = 'Doctors'
     # Ajustar tamaño de la imagen creada para que no sea muy grande
 
     def save(self, *args, **kwargs):
+        # if not self.pk:
+        #     self.user = User.objects.get(username = self.request.user.username)
         super().save(*args, **kwargs)
+        
         img = Image.open(self.photo.path)
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
@@ -63,20 +66,13 @@ class Profile (models.Model):
     #         update_fields=update_fields,
     #         )
             
-            
-            
-            
-            
-            
-            
-            
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.get_or_create(user=instance)
+        Doctor.objects.get_or_create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    instance.doctor.save()

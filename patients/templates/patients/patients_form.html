@@ -1,0 +1,72 @@
+{% extends 'appointment/base.html' %} 
+{% load static %} 
+{% load custom_filters %} 
+{% block content %}
+
+<div class="container">
+
+    {% if form.errors %}
+    <div class="alert alert-danger">
+      {% for _, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+    
+  
+    
+
+  
+
+
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group col-md-6">
+        <label for="nombre">Nombres</label>
+        {{form.first_name|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="apellidos">Apellidos</label>
+        {{form.last_name|add_class:'form-control'}}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="nacimiento">Fecha de nacimiento (dd/mm/aaaa)</label>
+        {{form.birthDate|add_class:'form-control'}}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="cedula">Cédula / Pasaporte</label>
+        {{form.identification|add_class:'form-control'}}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="direccion">Dirección</label>
+        {{form.address|add_class:'form-control'}}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="correo">Email</label>
+        {{form.email|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="nombre">Teléfono</label>
+        {{form.phone|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="sexo">Sexo</label>
+        {{form.sex}}
+      </div>
+
+
+  
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+
+{% endblock content %}
