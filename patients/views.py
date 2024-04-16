@@ -35,9 +35,9 @@ class CreatePatientsView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
 # * ACTUALIZAR PACIENTES
 
 class UpdatePatientsView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
-    template_name = 'patients/patients_update_form.html'
+    template_name = 'patients/patients_form.html'
     model = Patient
-    success_url = 'patients/patients_form.html'
+    success_url = reverse_lazy('patient-read')
     form_class = PatientProfileForm
     
     def form_valid(self, form) :
@@ -50,6 +50,12 @@ class UpdatePatientsView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
         if self.request.user == patient.doctor:
             return True
         return False
+    
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['patient'] = self.object
+    #     return super().get_context_data(**kwargs)
+    
 
 # * LISTAR TODOS LOS PACIENTES 
 
@@ -63,7 +69,8 @@ class ReadPatientsView(ListView,LoginRequiredMixin, UserPassesTestMixin):
 # * BORRAR PACIENTE
 class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Patient
-    success_url = 'patients/patients_list.html'
+    template_name = 'patients/patients_confirm_delete.html'
+    success_url =  reverse_lazy('patient-read')
     
         #Evitar que doctores ajenos accedan a pacientes
     def test_func(self):
@@ -82,14 +89,16 @@ class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
 class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
     template_name = 'patients/historial_form.html'
     model = Medical_History
-    success_url = 'patients/historial_form.html'
-    form_class = PatientProfileForm
+    success_url = reverse_lazy('patient-read')
+    form_class = PatientClinicalHistoryForm
     
     
     def form_valid(self, form):
         #para que el usuario sea el doctor logueado
-        form.instance.doctor = self.request.user
-        messages.success(self.request, 'Paciente añadido con éxito')
+        # patient_id = self.kwargs['patient_pk']
+        # patient = Patient.objects.get(pk=patient_id)
+        # form.instance.patient = patient
+        messages.success(self.request, 'Historia creada con éxito')
         return super().form_valid(form)
 
 

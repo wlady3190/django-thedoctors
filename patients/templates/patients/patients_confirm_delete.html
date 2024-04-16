@@ -1,0 +1,22 @@
+{% extends 'appointment/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+
+    
+<div class="container">
+    <form method="post">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Borrar paciente</legend>
+        <h3>¿Desea borrar el perfil de {{object.first_name}} {{object.last_name}}? </h3>
+      </fieldset>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-danger">Si, borrar</button>
+        <a class="btn btn-outline-secondary" href="{% url 'patient-read' %}">No, cancelar</a>
+      </div>
+    </form>
+  </div>
+  {% endblock content %}

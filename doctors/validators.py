@@ -7,6 +7,6 @@ def numeric_validator(value):
         raise ValidationError('Ingrese solo números.')
 
 def letter_validator(value):
-    pattern = r'^[A-Za-z\s]*$'  # Permitir letras y espacios
+    pattern = r'^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]*$' # Permitir letras y espacios
     if not re.match(pattern, value):
         raise ValidationError('Ingrese solo letras.')

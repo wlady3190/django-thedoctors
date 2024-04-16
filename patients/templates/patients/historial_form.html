@@ -1,1 +1,42 @@
-{{form}}
+{% extends 'appointment/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block content %}
+    
+
+<div class="container">
+
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group col-md-6">
+        <label for="nombre">Alergias</label>
+        {{form.allergy|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="nombre">Enfermedades</label>
+        {{form.diseases|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="nombre">Medicinas</label>
+        {{form.medicines|add_class:'form-control'}}
+      </div>
+
+
+  
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+
+
+    
+</div>
+
+
+{% endblock content%}
+    
