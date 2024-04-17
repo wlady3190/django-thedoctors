@@ -70,9 +70,17 @@
                 <a href="{% url 'patient-delete' patient.id %}"><button type="button" class="btn btn-outline-danger">Eliminar</button></a>
 
 
+                {% if patient.medical_history %}
+                 <a href="{% url 'history-update' patient.id %}">
+                     <button type="button" class="btn btn-outline-primary">Editar Ficha Médica</button>
+                </a>
+                    {% else %}
+                <a href="{% url 'history-create' patient.id %}">
+                    <button type="button" class="btn btn-outline-danger">Crear Ficha Médica</button>
+                 </a>
+                {% endif %} 
 
-                <a href="{% url 'history-create' patient.id %}"><button type="button" class="btn btn-outline-danger">Ficha Médica</button></a></td>
-
+            </td>
 
         </tr>
         {% endfor %}
@@ -108,11 +116,10 @@
     new DataTable('#patients', {
   columnDefs: [
       {
-          targets: 4,
+          targets: 3,
           render: DataTable.render.datetime('Do MMM YYYY'),
           
-      }
-      
+      }  
   ],
   language: {
         url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json',

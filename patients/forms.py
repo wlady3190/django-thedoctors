@@ -34,16 +34,12 @@ class PatientProfileForm(forms.ModelForm):
                   'phone',
                   'sex',]
         
-class PatientClinicalHistoryForm (forms.ModelForm):
-    PRENANT_CHOICES = [
-        (True, "Si"),
-        (False, "No")
-    ]
-    allergy = forms.Textarea()
-    diseases = forms.Textarea()
-    medicines = forms.Textarea()
-    pregnant = forms.ChoiceField(choices=[(False, 'No')], initial=False, widget=forms.RadioSelect())
+class PatientClinicalHistoryForm(forms.ModelForm):
     
+    allergy = forms.CharField(widget=forms.Textarea)
+    diseases = forms.CharField(widget=forms.Textarea)
+    medicines = forms.CharField(widget=forms.Textarea)
+    additional_info = forms.CharField(widget=forms.Textarea)
     class Meta:
         model = Medical_History
-        fields =['allergy', 'diseases', 'medicines', 'pregnant']
+        fields = ['allergy', 'diseases', 'medicines', 'additional_info',]

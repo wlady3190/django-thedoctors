@@ -24,9 +24,8 @@ urlpatterns = [
     path('patient/<int:pk>/update/',patient_views.UpdatePatientsView.as_view(), name='patient-update'),
     path('patient/<int:pk>/delete/', patient_views.DeletePatientView.as_view(), name='patient-delete'),
     path('patient/<int:pk>/history/new/', patient_views.CreateMedicalHistoryView.as_view(), name='history-create'),
-    path('patient/<int:pk>/history/<int:history_pk>/', patient_views.HistoryDetailView.as_view(), name='history-read'),
-    path('patient/<int:pk>/history/<int:history_pk>/update/', patient_views.UpdateMedicalHistoryView.as_view(), name='history-update'),
-    path('patient/<int:pk>/history/<int:history_pk>/delete/', patient_views.HistoryDeleteView.as_view(), name='history-delete'),
+    path('patient/<int:pk>/history/detail/', patient_views.HistoryDetailView.as_view(), name='history-read'),
+    path('patient/<int:pk>/history/update/', patient_views.UpdateMedicalHistoryView.as_view(), name='history-update'),
     
     
     

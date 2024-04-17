@@ -1,7 +1,9 @@
 from typing import Any
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -42,6 +44,7 @@ class UpdatePatientsView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     
     def form_valid(self, form) :
         form.instance.doctor  = self.request.user
+        messages.success(self.request, 'Paciente actualizado con éxito')
         return super().form_valid(form)
     
     #Evitar que doctores ajenos accedan a pacientes
@@ -83,21 +86,20 @@ class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
         messages.success(request, 'Registro eliminado con éxito')
         return super().delete(request, *args, **kwargs)
     
-# ** HISTORIAL MEDICO **
+# ! HISTORIAL MEDICO **
 # * CREAR HISTORIAL
 
 class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
-    template_name = 'patients/historial_form.html'
+    template_name = 'patients/history_form.html'
     model = Medical_History
-    success_url = reverse_lazy('patient-read')
+    #fields = ['allergy', 'diseases', 'medicines', 'additional_info']
     form_class = PatientClinicalHistoryForm
-    
+    success_url = reverse_lazy('patient-read')
     
     def form_valid(self, form):
-        #para que el usuario sea el doctor logueado
-        # patient_id = self.kwargs['patient_pk']
-        # patient = Patient.objects.get(pk=patient_id)
-        # form.instance.patient = patient
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk=patient_id)
+        form.instance.patient = patient
         messages.success(self.request, 'Historia creada con éxito')
         return super().form_valid(form)
 
@@ -106,10 +108,20 @@ class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMix
 
 
 class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
-    template_name = 'patients/historial_update_form.html'
+    template_name = 'patients/history_form.html'
     model = Medical_History
-    success_url = 'patients/historial_form.html'
+    success_url = reverse_lazy('patient-read')
     form_class = PatientClinicalHistoryForm
+    
+    
+    def get_object(self, queryset= None):
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk = patient_id)
+        return get_object_or_404(Medical_History, patient = patient)
+        
+    def form_valid(self, form):
+        messages.success(self.request, 'Historia actualizada con éxito')
+        return super().form_valid(form)
         
     #Evitar que doctores ajenos accedan a pacientes
     def test_func(self):
@@ -122,25 +134,25 @@ class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMix
 
 class HistoryDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Medical_History
-    template_name = 'patients/historial_detail.html'
+    template_name = 'patients/history_detail.html'
 
 
-# * ELIMINAR HISTORIAL 
+#  ELIMINAR HISTORIAL 
 
-class HistoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
-    model = Medical_History
-    success_url = 'patients/patients_list.html'
+# class HistoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+#     model = Medical_History
+#     success_url = 'patients/patients_list.html'
     
-        #Evitar que doctores ajenos accedan a pacientes
-    def test_func(self):
-        patient  = self.get_object()
-        if self.request.user == patient.doctor:
-            return True
-        return False
+#         #Evitar que doctores ajenos accedan a pacientes
+#     def test_func(self):
+#         patient  = self.get_object()
+#         if self.request.user == patient.doctor:
+#             return True
+#         return False
     
-    def delete(self, request, *args, **kwargs):
-        messages.success(request, 'Registro eliminado con éxito')
-        return super().delete(request, *args, **kwargs)
+#     def delete(self, request, *args, **kwargs):
+#         messages.success(request, 'Registro eliminado con éxito')
+#         return super().delete(request, *args, **kwargs)
 
     
     
