@@ -1,4 +1,4 @@
-{% extends 'appointment/base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 {% load custom_filters %}
 
@@ -58,27 +58,37 @@
         </tr>
     </thead>
     <tbody>
-        {% for patient in patients %}
-            
-           
+        {% for patient in patients %}          
         <tr>
             <td>{{patient.last_name}} {{patient.first_name}}</td>
-            <td> {{patient.birthDate}}</td>
+            <td> {{patient.age}}</td>
             <td>{{patient.phone}}</td>
-            <td><a href="{% url 'patient-update' patient.id %}"><button type="button" class="btn btn-outline-secondary" >Editar</button></a> 
+            <td class="d-flex justify-content-evenly">
 
-                <a href="{% url 'patient-delete' patient.id %}"><button type="button" class="btn btn-outline-danger">Eliminar</button></a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Acciones <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                      </svg>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="{% url 'patient-update' patient.id %}">Actualizar paciente</a></li>
+                      <li><a class="dropdown-item" href="{% url 'patient-delete' patient.id %}">Eliminar paciente</a></li>
+                      {% if patient.medical_history %}
+                      <li><a class="dropdown-item" href="{% url 'history-read' patient.id %}">Ver antecedentes</a></li>
+                         {% else %}
+                      <li><a class="dropdown-item" href="{% url 'history-create' patient.id %}">Crear antecedentes</a></li>
+                     {% endif %} 
 
-
-                {% if patient.medical_history %}
-                 <a href="{% url 'history-update' patient.id %}">
-                     <button type="button" class="btn btn-outline-primary">Editar Ficha Médica</button>
-                </a>
-                    {% else %}
-                <a href="{% url 'history-create' patient.id %}">
-                    <button type="button" class="btn btn-outline-danger">Crear Ficha Médica</button>
+                    </ul>
+                  </div>
+ 
+                <a href="{% url 'appointment-create' patient.id %}">
+                    <button type="button" class="btn btn-outline-danger">Generar sesión</button>
                  </a>
-                {% endif %} 
+                 <a href="{% url 'appointment-read-list' patient.id %}">
+                  <button type="button" class="btn btn-outline-danger">Ver sesiones</button>
+               </a>
 
             </td>
 
@@ -88,11 +98,10 @@
     </tbody>
     <tfoot>
         <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Teléfono</th>
             <th>Acciones</th>
-
         </tr>
     </tfoot>
 </table>
@@ -117,8 +126,8 @@
   columnDefs: [
       {
           targets: 3,
-          render: DataTable.render.datetime('Do MMM YYYY'),
-          
+          orderable: false,
+        //   render: DataTable.render.datetime('Do MMM YYYY'),   
       }  
   ],
   language: {

@@ -1,4 +1,4 @@
-{% extends 'appointment/base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 {% load custom_filters %}
 
@@ -10,6 +10,7 @@
 
 
 
+  
       
     <div class="container-fluid">
 
@@ -22,7 +23,15 @@
           <div class="row gx-4">
             <div class="col-auto">
               <div class="avatar avatar-xl position-relative">
-                <img src="../assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+
+                {% for item in doctor %}
+  
+                {% if item.user == request.user %}
+              <img src={{item.photo.url}} alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+              {% endif %}
+                {% endfor %}
+
+
               </div>
             </div>
             <div class="col-auto my-auto">
@@ -32,6 +41,10 @@
                 </h5>
                 <p class="mb-0 font-weight-bold text-sm">
                   Odontología / Ortodoncia
+                </p>
+                <p class="mb-0 font-weight-bold text-sm">
+
+                Última conexión: {{last_login}}
                 </p>
               </div>
             </div>
@@ -116,17 +129,25 @@
               </div>
               <div class="card-body p-3">
                 <ul class="list-group">
+
+                  
+                  {% for patient in patients %}
+                  
+                    
+  
+                             
                   <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                    <div class="avatar me-3">
+                    <!-- <div class="avatar me-3">
                       <img src="../assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
-                    </div>
+                    </div> -->
                     <div class="d-flex align-items-start flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">Sophie B.</h6>
+                      <h6 class="mb-0 text-sm">{{patient.last_name}} {{patient.first_name}}</h6>
                       <p class="mb-0 text-xs">Hi! I need more information..</p>
                     </div>
-                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
+                    <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="{% url 'appointment-read-list' patient.id %}">Ver citas</a>
                   </li>
-                  <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+                  {% endfor %}
+                  <!-- <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                     <div class="avatar me-3">
                       <img src="../assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
                     </div>
@@ -156,7 +177,7 @@
                     </div>
                     <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
                   </li>
-                  <li class="list-group-item border-0 d-flex align-items-center px-0">
+                  <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                     <div class="avatar me-3">
                       <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
                     </div>
@@ -165,7 +186,7 @@
                       <p class="mb-0 text-xs">Hi! I need more information..</p>
                     </div>
                     <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>

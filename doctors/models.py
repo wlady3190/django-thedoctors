@@ -6,7 +6,6 @@ from PIL import Image
 from django.dispatch import receiver
 
 
-
 # Regex para validar campos
 
 
@@ -34,8 +33,6 @@ class Doctor (models.Model):
 
 # a partir de esto se crea lo signasl para la creación correcta de perfiles
 
-    # def date_format_html(self):
-    #     return self.birthDate.strftime('%Y-%m-%d')
     def __str__(self):
         return f'{self.user} Doctor'
 
@@ -45,8 +42,6 @@ class Doctor (models.Model):
     # Ajustar tamaño de la imagen creada para que no sea muy grande
 
     def save(self, *args, **kwargs):
-        # if not self.pk:
-        #     self.user = User.objects.get(username = self.request.user.username)
         super().save(*args, **kwargs)
         
         img = Image.open(self.photo.path)
@@ -54,17 +49,6 @@ class Doctor (models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.photo.path)
-            
-    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-    #     self.slug = slugify(self.name)
-    #     if update_fields is not None and "name" in update_fields:
-    #         update_fields = {"slug"}.union(update_fields)
-    #     super().save(
-    #         force_insert=force_insert,
-    #         force_update=force_update,
-    #         using=using,
-    #         update_fields=update_fields,
-    #         )
             
 
 @receiver(post_save, sender=User)

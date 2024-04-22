@@ -1,3 +1,4 @@
+from datetime import  datetime
 from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
@@ -66,8 +67,19 @@ class ReadPatientsView(ListView,LoginRequiredMixin, UserPassesTestMixin):
     model = Patient
     template_name = 'patients/patients_list.html'
     context_object_name = 'patients'
-    # ordering = ['last_name']
-    # paginate_by = 5
+
+    def get_age(self, birthdate):
+        today = datetime.now()
+        age = today.year - birthdate.year -((today.month, today.day) < (birthdate.month, birthdate.day))
+        return age
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for patient in context['patients']:
+            patient.age = self.get_age(patient.birthDate)
+        return context
+    
+        
     
 # * BORRAR PACIENTE
 class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
@@ -115,9 +127,11 @@ class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMix
     
     
     def get_object(self, queryset= None):
-        patient_id = self.kwargs['pk']
-        patient = get_object_or_404(Patient, pk = patient_id)
-        return get_object_or_404(Medical_History, patient = patient)
+        # patient_id = self.kwargs['pk']
+        history_id = self.kwargs['pk']
+        # patient = get_object_or_404(Patient, pk = patient_id)
+        history = get_object_or_404(Medical_History, pk = history_id)
+        return history
         
     def form_valid(self, form):
         messages.success(self.request, 'Historia actualizada con éxito')
@@ -130,11 +144,18 @@ class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMix
             return True
         return False
 
-# * LISTAR HISTORIAL
+# #  LISTAR HISTORIAL
 
 class HistoryDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Medical_History
     template_name = 'patients/history_detail.html'
+    context_object_name = 'patients'
+     
+    def get_object(self, queryset= None):
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk = patient_id)
+        history = get_object_or_404(Medical_History, patient=patient)
+        return history
 
 
 #  ELIMINAR HISTORIAL 

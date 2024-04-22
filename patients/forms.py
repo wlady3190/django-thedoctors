@@ -17,7 +17,7 @@ class PatientProfileForm(forms.ModelForm):
     last_name = forms.CharField(max_length=150,  validators=[letter_validator], widget=forms.TextInput(attrs={'id':'apellidos'}))
     birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS)
     identification = forms.CharField(
-        max_length=10, validators=[numeric_validator])
+        max_length=10)
     address = forms.CharField()
     email = forms.EmailField()
     phone = forms.CharField(max_length=15, validators=[numeric_validator])

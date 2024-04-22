@@ -63,7 +63,7 @@ class SignUpView(CreateView):
 #         'u_form':u_form,
 #         'p_form': p_form
 #     }
-#     return render(request, 'appointment/profile.html', context)
+#     return render(request, 'dashboard/profile.html', context)
 
 class ProfileUpdateView (LoginRequiredMixin, UpdateView):
     template_name = 'appointment/profile.html'  # Reemplaza 'your_template.html' con el nombre de tu template

@@ -10,7 +10,11 @@ from patients import views as patient_views
 
 
 urlpatterns = [
-    path('', appointment_views.DashboardView.as_view(), name='dashboard'),
+    # path('', appointment_views.DashboardView.as_view(), name='dashboard'),
+    # path('', appointment_views.home_view, name='dashboard'),
+    path('', appointment_views.HomeView.as_view(), name='dashboard'),
+    
+    
     #path('profile/', profile, name='profile' ),
     path('profile/', doctors_views.ProfileUpdateView.as_view(), name='profile' ),
     path('logout/', appointment_views.user_logout, name='logout'),
@@ -26,10 +30,8 @@ urlpatterns = [
     path('patient/<int:pk>/history/new/', patient_views.CreateMedicalHistoryView.as_view(), name='history-create'),
     path('patient/<int:pk>/history/detail/', patient_views.HistoryDetailView.as_view(), name='history-read'),
     path('patient/<int:pk>/history/update/', patient_views.UpdateMedicalHistoryView.as_view(), name='history-update'),
-    
-    
-    
-
-    
+    path('appointment/<int:pk>/create/', appointment_views.CreateAppointmentView.as_view(), name='appointment-create'),
+    path('appointment/<int:pk>/list/', appointment_views.CreateAppointmentByPatientListView.as_view(), name='appointment-read-list')
+        
     
 ]

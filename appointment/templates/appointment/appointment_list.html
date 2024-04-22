@@ -1,0 +1,113 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block css_extra %}
+{{block.super}}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />  
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.4.1/css/scroller.bootstrap5.css">
+
+
+{% endblock css_extra %}
+
+
+
+{% block content %}
+    
+<div class="container">
+
+
+
+
+        <table id="appointments" class="hover row-border" >
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Diagnóstico y complicaciones</th>
+                    <th>Procedimiento</th>
+                    <th>Prescripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}          
+                <tr >
+                    <td>{{appointment.appointment_date_generated}}</td>
+                    <td  >{{appointment.diagnoses_complications}}</td>
+                    <td >{{appointment.procedures}}</td>
+                    <td >{{appointment.prescriptions}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Diagnóstico y complicaciones</th>
+                    <th>Procedimiento</th>
+                    <th>Prescripción</th>
+                </tr>
+            </tfoot>
+        </table>
+
+
+        <button class="button-add">
+            <a href="{% url 'appointment-create' patient_id %}">
+    
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Nueva sesión
+                </span>
+            </a>
+          </button>
+       
+
+    
+</div>
+
+
+
+
+    
+{% endblock content %}
+
+
+{% block js_extra %}
+{{block.super}}
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/scroller/2.4.1/js/dataTables.scroller.js"></script>
+<script src="https://cdn.datatables.net/scroller/2.4.1/js/scroller.bootstrap5.js"></script>
+
+<script >
+    new DataTable('#appointments', {
+
+         autowidth: false,
+        columns: [{ width: '10%' }, { width: '30%' }, { width: '30%' }, { width: '30%' }],
+        pagingType: 'simple_numbers',
+  language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json',
+    },
+    columnDefs: [
+            {
+                targets: 0, // Indica la primera columna (la de las fechas)
+                render: function(data, type, row, meta) {
+                    let date = new Date(data);
+                    let day = date.getDate();
+                    let month = date.getMonth() + 1; // Los meses son base 0, así que sumamos 1
+                    let year = date.getFullYear();
+                    return (day < 10 ? '0' : '') + day + '-' + (month < 10 ? '0' : '') + month + '-' + year;
+                }
+            }
+        ]
+});
+
+    </script>
+    
+{% endblock js_extra %}
+    
+
+
+    
