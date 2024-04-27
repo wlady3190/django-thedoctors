@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -13,6 +14,7 @@ from .forms import   UserAndProfileUpdateForm, UserRegisterForm
 from django.contrib.auth.decorators import login_required
 
 from django.views.generic import CreateView
+from core.utils import test_func
 
 
 
@@ -70,6 +72,7 @@ class ProfileUpdateView (LoginRequiredMixin, UpdateView):
     model = Doctor
     form_class = UserAndProfileUpdateForm  # Reemplaza 'ProfileUpdateForm' con el nombre de tu formulario de actualización
 
+
     def get_object(self, queryset=None):
         return self.request.user.doctor
 
@@ -80,6 +83,13 @@ class ProfileUpdateView (LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Perfil actualizado correctamente')
         return super().form_valid(form)
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user = self.request.user)
+    
+    def test_func(self):
+        doctor = Doctor.objects.get(user = self.request.user) 
+        return doctor == self.get_object()
     
     
 

@@ -1,21 +1,20 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
-
+from doctors.models import Doctor
 # Create your models here.
 
 class Patient (models.Model):
-
     SEX_CHOICES = [
         ('MASCULINE', "masculino"),
         ('FEMENINE', "femenino")
     ]
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=150, verbose_name="nombres", blank=True)
     last_name = models.CharField(max_length=150, verbose_name="apellidos", blank=True)
     birthDate = models.DateField(verbose_name="fecha_nacimiento", default= date.today)
     identification = models.TextField(
-        max_length=10, unique=True, verbose_name="cedula_identidad", blank=True)
+        max_length=10, verbose_name="cedula_identidad", blank=True)
     address = models.TextField(verbose_name="direccion", blank=True)
     email= models.EmailField(verbose_name='correo_paciente', default='example@email.com' , blank=True)
     phone = models.CharField(max_length=15, verbose_name='telefono', blank=True)
@@ -35,6 +34,7 @@ class Patient (models.Model):
 
 
 class Medical_History(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
     allergy = models.TextField(verbose_name="alergias", blank=True)
     diseases = models.TextField(verbose_name="enfermedades_preexistentes", blank=True)

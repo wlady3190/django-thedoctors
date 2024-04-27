@@ -36,12 +36,25 @@
             </div>
             <div class="col-auto my-auto">
               <div class="h-100">
+                {% for item in doctor %}
+  
+                {% if item.user == request.user %}
                 <h5 class="mb-1">
-                  Daysi Tierra
+                  {{item.first_name}} {{item.last_name}}
                 </h5>
+
+                {% endif %}
+                {% endfor %}
+
+                {% for item in doctor %}
+  
+                {% if item.user == request.user %}
                 <p class="mb-0 font-weight-bold text-sm">
-                  Odontología / Ortodoncia
+                  {{item.specialty}}
                 </p>
+                {% endif %}
+                {% endfor %}
+
                 <p class="mb-0 font-weight-bold text-sm">
 
                 Última conexión: {{last_login}}

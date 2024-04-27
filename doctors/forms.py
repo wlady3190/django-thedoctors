@@ -52,15 +52,16 @@ class UserAndProfileUpdateForm(forms.ModelForm):
     first_name = forms.CharField(max_length=50, validators=[letter_validator])
     last_name = forms.CharField(max_length=50, validators=[letter_validator])
     # Campos del modelo de perfil (Profile)
-    birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS)
-    identification = forms.CharField(max_length=15, validators=[numeric_validator])
-    registryCode = forms.CharField(max_length=20)
-    address = forms.CharField(max_length=200)
-    phone = forms.CharField(max_length=15, validators=[numeric_validator])
-    photo = forms.ImageField(widget=forms.FileInput)
+    birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS, required=False)
+    identification = forms.CharField(max_length=15, validators=[numeric_validator], required=False)
+    registryCode = forms.CharField(max_length=20, required=False)
+    specialty = forms.CharField(max_length=50, required=False)
+    address = forms.CharField(max_length=200, required=False)
+    phone = forms.CharField(max_length=15, validators=[numeric_validator], required=False)
+    photo = forms.ImageField(widget=forms.FileInput, required=False)
 
     class Meta:
         widgets = {'my_date_field': DateInput()}
         #! Este es el original model = User
         model = Doctor
-        fields = ['first_name', 'last_name', 'birthDate', 'identification', 'registryCode', 'address', 'phone', 'photo']
+        fields = ['first_name', 'last_name', 'birthDate', 'identification', 'registryCode','specialty', 'address', 'phone', 'photo']

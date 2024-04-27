@@ -1,7 +1,7 @@
 from django.db import models
 from doctors.models import Doctor
 from patients.models import Patient
-
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
 
@@ -17,6 +17,7 @@ class PositiveDecimalField(models.DecimalField):
         super().__init__(*args, **kwargs)
 
 class Appointment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE)
     appointment_date_generated = models.DateField(verbose_name='fecha_cita_medica', default=date.today)

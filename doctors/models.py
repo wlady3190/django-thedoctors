@@ -25,6 +25,7 @@ class Doctor (models.Model):
     phone = models.CharField(max_length=15, verbose_name='telefono_doctor', blank=True)
     photo = models.ImageField(default='profile.png',
                               upload_to='user_profile', blank=True)
+    specialty = models.CharField(max_length=50, verbose_name='especialidad')
     created = models.DateTimeField(
         auto_now_add=True, verbose_name="fecha_creacion_doctor")
     updated = models.DateTimeField(

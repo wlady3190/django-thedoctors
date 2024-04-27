@@ -21,8 +21,12 @@ from patients.models import Patient
 from .models import Appointment
 from .forms import AppointmentForm
 from django.contrib import messages
+from core.utils import test_func
 # Create your views here.
 
+
+def custom_404_error(request, exception):
+    return render(request, 'error_pages/error_404.html', status = 404 )
 
    
 
@@ -30,9 +34,10 @@ class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
     def get(self, request):
         user = request.user
         last_login = user.last_login
-        doctor = Doctor.objects.all()
-        patients = Patient.objects.all().order_by('-created')[:5]
-        appointments = Appointment.objects.all().order_by('-created')[:5]
+        doctor = Doctor.objects.filter(user = user)
+        patients = Patient.objects.filter(user = user).order_by('-created')[:5]
+        appointments = Appointment.objects.filter(user=user).order_by('-created')[:5]
+
         
         context = {
             'doctor': doctor,
@@ -41,6 +46,13 @@ class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
             'last_login': last_login
         }
         return render(request, 'dashboard/dashboard.html', context)
+    
+    # def test_func(self):
+    #     patient = Patient.objects.get(user = self.request.user)
+    #     return patient == self.get_object()
+
+
+    
 
 
 @login_required
@@ -49,10 +61,14 @@ def user_logout(request):
     return redirect('login')
 
 
-class CreateAppointmentView(LoginRequiredMixin, CreateView, UserPassesTestMixin):
-    template_name = 'appointment/medical_record.html'
-    context_object_name = 'objects'
-    model = Appointment
+# class CreateAppointmentView(LoginRequiredMixin, CreateView, UserPassesTestMixin):
+#     template_name = 'appointment/medical_record.html'
+#     context_object_name = 'objects'
+#     model = Appointment
+    
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         return queryset.filter(user = self.request.user)
 
 
 class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
@@ -60,19 +76,30 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
     form_class = AppointmentForm
     model = Appointment
     success_url = reverse_lazy('patient-read')
+
+    
     
     def form_valid(self, form):
+        form.instance.user = self.request.user
         patient_id = self.kwargs['pk']
         patient = get_object_or_404(Patient, pk = patient_id)
         form.instance.patient = patient
         messages.success(self.request, 'Cita médica generada con éxito')
         return super().form_valid(form)
-
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user = self.request.user)
+    
+    # def test_func(self):
+    #     appointment = Appointment.objects.get(user= self.request.user) 
+    #     return appointment == self.get_object()
 
 class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'appointment/appointment_list.html'
     model = Appointment
     context_object_name = 'appointments'
+
     
     
     def get_context_data(self, **kwargs):
@@ -83,7 +110,15 @@ class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPasse
             'patient_id': patient_id
         }
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user = self.request.user)
+    
 
-
+    def test_func(self):
+        patient_id = self.kwargs.get('pk')
+        patient = get_object_or_404(Patient, patient_id)
+        return patient == self.request.user
 
       

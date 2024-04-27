@@ -15,13 +15,12 @@ class PatientProfileForm(forms.ModelForm):
     ]
     first_name = forms.CharField(max_length=150, validators=[letter_validator], widget=forms.TextInput(attrs={'placeholder': 'Juan Fernando', 'id': 'nombres'}))
     last_name = forms.CharField(max_length=150,  validators=[letter_validator], widget=forms.TextInput(attrs={'id':'apellidos'}))
-    birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS)
-    identification = forms.CharField(
-        max_length=10)
-    address = forms.CharField()
-    email = forms.EmailField()
-    phone = forms.CharField(max_length=15, validators=[numeric_validator])
-    sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.RadioSelect())
+    birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS, required=False)
+    identification = forms.CharField(max_length=10, required=False)
+    address = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
+    phone = forms.CharField(max_length=15, validators=[numeric_validator], required=False)
+    sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.RadioSelect(), required=False)
 
     class Meta:
         model = Patient
@@ -36,10 +35,10 @@ class PatientProfileForm(forms.ModelForm):
         
 class PatientClinicalHistoryForm(forms.ModelForm):
     
-    allergy = forms.CharField(widget=forms.Textarea)
-    diseases = forms.CharField(widget=forms.Textarea)
-    medicines = forms.CharField(widget=forms.Textarea)
-    additional_info = forms.CharField(widget=forms.Textarea)
+    allergy = forms.CharField(widget=forms.Textarea, required=False)
+    diseases = forms.CharField(widget=forms.Textarea, required=False)
+    medicines = forms.CharField(widget=forms.Textarea, required=False)
+    additional_info = forms.CharField(widget=forms.Textarea, required=False)
     class Meta:
         model = Medical_History
         fields = ['allergy', 'diseases', 'medicines', 'additional_info',]

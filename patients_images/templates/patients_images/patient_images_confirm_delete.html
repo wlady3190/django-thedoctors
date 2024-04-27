@@ -1,0 +1,41 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+
+    
+<div class="container">
+    
+    
+    
+    
+    <form method="post">
+
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Borrar paciente</legend>
+        <h3>¿Desea borrar el set de imágenes </h3>
+      </fieldset>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-danger">Si, borrar</button>
+        
+        {% comment %}
+            
+        <a class="btn btn-outline-secondary" href="  {% url 'images-repo-read' pk=patient.id %}">No, cancelar</a>
+
+        {% endcomment %}
+        <a class="btn btn-outline-secondary" onclick="goBack()">No, cancelar</a>
+        
+      </div>
+    </form>
+  </div>
+
+  <script>
+function goBack() {
+  window.history.back();
+}
+  </script>
+  {% endblock content %}
+

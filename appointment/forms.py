@@ -14,25 +14,25 @@ class DateInput(forms.DateInput):
 class AppointmentForm(forms.ModelForm):
     
     #!Signos vitales
-    blood_pressure = forms.CharField()
-    heart_rate = forms.IntegerField()
-    temperature = forms.IntegerField()
-    breathing_frequency = forms.IntegerField()
-    oxygen_saturation = forms.IntegerField()
+    blood_pressure = forms.CharField(required=False)
+    heart_rate = forms.IntegerField(required=False)
+    temperature = forms.IntegerField(required=False)
+    breathing_frequency = forms.IntegerField(required=False)
+    oxygen_saturation = forms.IntegerField(required=False)
     # !Diagnóstico
     DIAGNOSIS_TYPE = [
         ('PRE', 'presuntivo'),
         ('DEF', 'definitivo')]
     diagnosis_type = forms.ChoiceField(
-        choices=DIAGNOSIS_TYPE,  widget=forms.RadioSelect)
+        choices=DIAGNOSIS_TYPE,  widget=forms.RadioSelect,required=False)
     cie10_code = forms.CharField()
-    diagnoses = forms.CharField(widget=forms.Textarea)
+    diagnoses = forms.CharField(widget=forms.Textarea, required=False)
     
     #!Complicaciones
-    diagnoses_complications = forms.CharField(widget=forms.Textarea)
-    procedures = forms.CharField(widget=forms.Textarea)
-    prescriptions = forms.CharField(widget=forms.Textarea)    
-    appointment_date_generated = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS)
+    diagnoses_complications = forms.CharField(widget=forms.Textarea, required=False)
+    procedures = forms.CharField(widget=forms.Textarea, required=False)
+    prescriptions = forms.CharField(widget=forms.Textarea, required=False)    
+    appointment_date_generated = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS, required=False)
     
     
     class Meta:

@@ -8,6 +8,10 @@
 {{block.super}}
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />  
 
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.4.1/css/scroller.bootstrap5.css">
+
 {% endblock css_extra %}
  
 
@@ -48,7 +52,9 @@
         </a>
       </button>
 
-<table id="patients" class="display" style="width:100%">
+<div class="container-fluid">
+
+<table id="patients"  class="hover">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -81,14 +87,39 @@
                      {% endif %} 
 
                     </ul>
+
+
                   </div>
- 
-                <a href="{% url 'appointment-create' patient.id %}">
-                    <button type="button" class="btn btn-outline-danger">Generar sesión</button>
-                 </a>
-                 <a href="{% url 'appointment-read-list' patient.id %}">
-                  <button type="button" class="btn btn-outline-danger">Ver sesiones</button>
-               </a>
+
+                  <div class="dropdown">
+                    <button class="btn btn-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Sesiones <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                      </svg>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="{% url 'appointment-read-list' patient.id %}">Ver sesiones</a></li>
+                      <li><a class="dropdown-item" href="{% url 'appointment-create' patient.id %}">Generar sesión</a></li>
+                    </ul>
+
+                  </div>
+
+
+                  <div class="dropdown">
+                    <button class="btn btn-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Imágenes <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                      </svg>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <!-- <li><a class="dropdown-item" href="{% url 'appointment-read-list' patient.id %}">Ver sesiones</a></li> -->
+                      <li><a class="dropdown-item" href="{% url 'images-repo-create' patient.id %}">Cargar imágenes</a></li>
+                      <li><a class="dropdown-item" href="{% url 'images-repo-read' patient.id %}">Ver imágenes</a></li>
+
+                    </ul>
+
+                  </div>
+
 
             </td>
 
@@ -106,6 +137,9 @@
     </tfoot>
 </table>
 
+
+</div>
+
 </div>
 
 {% endblock content %}
@@ -117,9 +151,14 @@
 {{block.super}}
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+<!-- <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
-<!-- <script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"></script> -->
+
+
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/scroller/2.4.1/js/dataTables.scroller.js"></script>
+<script src="https://cdn.datatables.net/scroller/2.4.1/js/scroller.bootstrap5.js"></script>
 
 <script >
     new DataTable('#patients', {
@@ -127,9 +166,12 @@
       {
           targets: 3,
           orderable: false,
-        //   render: DataTable.render.datetime('Do MMM YYYY'),   
-      }  
+      },
+
   ],
+        autowidth: false,
+        columns: [{ width: '25%' }, { width: '5%' }, { width: '25%' }, { width: '45%' }],
+        pagingType: 'simple_numbers',  
   language: {
         url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json',
     },
