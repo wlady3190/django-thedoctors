@@ -1,145 +1,222 @@
-
-{% extends 'dashboard/base.html' %}
-
-{% load static %}
-
-{% load custom_filters %}
-
-
-{% block css_extra %}
-{{block.super}}
-
-    
-{% endblock css_extra %}
-    
-
+{% extends 'dashboard/base.html' %} {% load static %} {% load custom_filters %}
+{% block css_extra %} {{block.super}} {% endblock css_extra %} 
 {% block content %}
 
-
-
-<div class="container-fluid">
-
-  {% for message in messages %}
+<div class="container-fluid row">
+  {% for message in messages %} 
   
-    
   {% if message.tags == 'success' %}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>{{message}}</strong> 
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-    </svg></button>
+    <strong>{{message}}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        fill="currentColor"
+        class="bi bi-x-lg"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+        />
+      </svg>
+    </button>
   </div>
-  
-{% else %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Ups! Ha habido un error al actualizar</strong> 
-  <b><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-  </svg></button></b>
-</div>
-{% endif %}
-  
-{% endfor %}
 
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Ups! Ha habido un error al actualizar</strong>
+    <b
+      ><button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          fill="currentColor"
+          class="bi bi-x-lg"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+          />
+        </svg></button
+    ></b>
+  </div>
+  {% endif %} 
+  {% endfor %}
 
+    <div class="col col-6">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#home-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="home-tab-pane"
+            aria-selected="true"
+          >
+            Signos vitales
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#profile-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="profile-tab-pane"
+            aria-selected="false"
+          >
+            Diagnóstico inicial
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="contact-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="contact-tab-pane"
+            aria-selected="false"
+          >
+            Seguimiento
+          </button>
+        </li>
+      </ul>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Signos vitales</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Diagnóstico inicial</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Seguimiento</button>
-    </li>
-  </ul>
-  
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    <div class="tab-content" id="myTabContent">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-      
-      <div class="form-group col-md-6">
-        <label for="apellidos">Presión sanguínea </label>
-        {{form.blood_pressure|add_class:'form-control'}}
-      </div>
+        <div class="tab-content" id="myTabContent">
+          <div
+            class="tab-pane fade show active"
+            id="home-tab-pane"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+            tabindex="0"
+          >
+            <div class="form-group ">
+              <label for="apellidos">Presión sanguínea </label>
+              {{form.blood_pressure|add_class:'form-control'}}
+            </div>
 
-      <div class="form-group col-md-6">
-        <label for="apellidos">Frecuencia cardíaca</label>
-        {{form.heart_rate|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Temperatura</label>
-        {{form.temperature|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Saturación de oxígeno</label>
-        {{form.oxygen_saturation|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Frecuencia respiratoria</label>
-        {{form.breathing_frequency|add_class:'form-control'}}
-      </div>
-   
+            <div class="form-group ">
+              <label for="apellidos">Frecuencia cardíaca</label>
+              {{form.heart_rate|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Temperatura</label>
+              {{form.temperature|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Saturación de oxígeno</label>
+              {{form.oxygen_saturation|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Frecuencia respiratoria</label>
+              {{form.breathing_frequency|add_class:'form-control'}}
+            </div>
+          </div>
+          <!-- !Diagnóstico -->
+          <div
+            class="tab-pane fade"
+            id="profile-tab-pane"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+            tabindex="0"
+          >
+            <div class="form-group">
+              <label for="diagnostic-type">Tipo de Diagnóstico</label>
+              {{form.diagnosis_type}}
+            </div>
+
+            <div class="form-group">
+              <label for="cie10">CIE</label>
+              {{form.cie10_code|add_class:'form-control'}}
+            </div>
+
+            <div class="form-group">
+              <label for="diagnostico">Diagnóstico</label>
+              {{form.diagnoses|add_class:'form-control'}}
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="contact-tab-pane"
+            role="tabpanel"
+            aria-labelledby="contact-tab"
+            tabindex="0"
+          >
+            <div class="form-group ">
+              <label for="apellidos">Diagnóstico y complicaciones</label>
+              {{form.diagnoses_complications|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Procedimientos</label>
+              {{form.procedures|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Prescripciones</label>
+              {{form.prescriptions|add_class:'form-control'}}
+            </div>
+            <div class="form-group ">
+              <label for="apellidos">Fecha de la cita</label>
+              {{form.appointment_date_generated|add_class:'form-control'}}
+            </div>
+          </div>
+        </div>
+        <button class="button-add" style="color: white;" type="submit">Guardar</button>
+      </form>
     </div>
-  <!-- !Diagnóstico -->
-    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+  
 
-      <div class="form-group col-md-6">
-        <label for="diagnostic-type">Tipo de Diagnóstico</label>
-        {{form.diagnosis_type}}
+  <div class=" col col-md-6" >
+    
+
+    <div class="card sticky-top">
+      <div class="card-body p-3">
+            <div class="d-flex flex-column h-100">
+              <p class="mb-1 pt-2 text-bold">DATOS DEL PACIENTE</p>
+              <h5 class="font-weight-bolder">{{patient.first_name}} {{patient.last_name}}</h5>
+              <p class="mb-1">
+                Alergias: {{medical_history.allergy}}
+              </p>
+              <p class="mb-1">
+                Enfermedades pre-existentes: {{medical_history.diseases}}
+              </p>
+              <p class="mb-1">
+                Medicinas actuales: {{medical_history.medicines}}
+              </p>
+              <p class="mb-1">
+                Información adicional: {{medical_history.additional_info}}
+              </p>
+            </div>
+
       </div>
-
-      <div class="form-group col-md-6">
-        <label for="cie10">CIE</label>
-        {{form.cie10_code|add_class:'form-control'}}
-      </div>
-
-
-      <div class="form-group col-md-6">
-        <label for="diagnostico">Diagnóstico</label>
-        {{form.diagnoses|add_class:'form-control'}}
-      </div>
-
     </div>
-    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-
-      <div class="form-group col-md-6">
-        <label for="apellidos">Diagnóstico y complicaciones</label>
-        {{form.diagnoses_complications|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Procedimientos</label>
-        {{form.procedures|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Prescripciones</label>
-        {{form.prescriptions|add_class:'form-control'}}
-      </div>
-      <div class="form-group col-md-6">
-        <label for="apellidos">Fecha de la cita</label>
-        {{form.appointment_date_generated|add_class:'form-control'}}
-      </div>
-
-    </div>
+  </div>
 </div>
-  <button type="submit">Guardar</button>
-</form>
+  {% endblock content %} {% block js_extra %} {{block.super}}
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-</div>
+  {% endblock js_extra %}
 
-    
-{% endblock content %}
-    
-
-
-{% block js_extra %}
-{{block.super}}
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    
-{% endblock js_extra %}
-    

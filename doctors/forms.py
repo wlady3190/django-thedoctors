@@ -44,11 +44,6 @@ class DateInput(forms.DateInput):
 
 
 class UserAndProfileUpdateForm(forms.ModelForm):
-    # Campos del modelo de usuario (User)
-    
-    # numeric_validator = RegexValidator(r'^[0-9]*$', 'Identificación / teléfono: Ingresar solo números y sin espacios')
-    # letter_validator = RegexValidator(r'^[A-Za-z\s]*$', 'Nombre / Apellido: Ingresar solo letras')
-
     first_name = forms.CharField(max_length=50, validators=[letter_validator])
     last_name = forms.CharField(max_length=50, validators=[letter_validator])
     # Campos del modelo de perfil (Profile)

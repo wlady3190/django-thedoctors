@@ -1,0 +1,29 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block content %}
+    
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group col-md-6">
+        <label for="nombre">Nombres</label>
+        {{form.full_name|add_class:'form-control'}}
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="nombre">Nombres</label>
+        {{form.appointment_date|add_class:'form-control'}}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="nombre">Nombres</label>
+        {{form.appointment_time|add_class:'form-control'}}
+      </div>
+
+      <button type="submit" class="btn btn-secondary"> Crear cita</button>
+
+</form>
+{% endblock content %}

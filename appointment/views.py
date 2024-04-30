@@ -1,3 +1,5 @@
+
+from django.conf import settings
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render
@@ -12,18 +14,27 @@ from django.views.generic import TemplateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import logout
-from django.views.generic import CreateView, ListView, View
-from doctors.models import Doctor
-from patients.models import Patient
+from django.views.generic import CreateView, ListView, View, DetailView
 
-from patients.models import Patient
+from doctors.models import Doctor
+from patients.models import Patient, Medical_History
+from appointment_schedule.models import Schedule
 
 from .models import Appointment
 from .forms import AppointmentForm
 from django.contrib import messages
 from core.utils import test_func
-# Create your views here.
+from datetime import date
 
+#! crear pdf
+from django.template.loader import render_to_string
+#! OJO QUE ESTA DEPENDENCIA NO ESTÁ RECONOCIDA PERO FUNCIONA
+from weasyprint import HTML # type: ignore
+import tempfile
+from datetime import date, datetime
+
+
+# Create your views here.
 
 def custom_404_error(request, exception):
     return render(request, 'error_pages/error_404.html', status = 404 )
@@ -37,13 +48,15 @@ class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
         doctor = Doctor.objects.filter(user = user)
         patients = Patient.objects.filter(user = user).order_by('-created')[:5]
         appointments = Appointment.objects.filter(user=user).order_by('-created')[:5]
+        schedules = Schedule.objects.filter(user = user).order_by('appointment_date')[:5]
 
         
         context = {
             'doctor': doctor,
             'patients': patients,
             'appointments': appointments,
-            'last_login': last_login
+            'last_login': last_login,
+            'schedules': schedules
         }
         return render(request, 'dashboard/dashboard.html', context)
     
@@ -59,16 +72,6 @@ class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
 def user_logout(request):
     logout(request)
     return redirect('login')
-
-
-# class CreateAppointmentView(LoginRequiredMixin, CreateView, UserPassesTestMixin):
-#     template_name = 'appointment/medical_record.html'
-#     context_object_name = 'objects'
-#     model = Appointment
-    
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         return queryset.filter(user = self.request.user)
 
 
 class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
@@ -90,6 +93,18 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(user = self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk = patient_id)
+        medical_history = get_object_or_404(Medical_History, pk = patient_id)
+        context['patient'] = patient
+        context['medical_history'] = medical_history
+        return context
+        
+    
+    
     
     # def test_func(self):
     #     appointment = Appointment.objects.get(user= self.request.user) 
@@ -120,5 +135,49 @@ class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPasse
         patient_id = self.kwargs.get('pk')
         patient = get_object_or_404(Patient, patient_id)
         return patient == self.request.user
+    
+# ! Generación de pdf
 
-      
+
+class ExportPDFView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Appointment
+    
+    
+    def get_object(self):
+        patient_id = self.kwargs['pk']
+        pk_appointment = self.kwargs['pk_appointment']
+        return get_object_or_404(Appointment, patient_id=patient_id, id = pk_appointment)
+    
+   
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        doctor = Doctor.objects.filter(user = user)
+        appointment = self.get_object()
+        patient = appointment.patient
+                
+        context = {
+            'appointment': appointment,
+            'patient': patient,
+            'doctor': doctor,
+            'user': user, 
+
+        }
+
+        
+        response = HttpResponse(content_type="application/pdf")
+        today_date = date.today().strftime("%Y-%m-%d")
+        response["Content-Disposition"] = f"attachment; filename=certificado_{today_date}-{patient.identification}.pdf"
+        response['Content-Transfer_Encoding'] = 'binary'
+        
+       
+        html_string = render_to_string('appointment/certificate.html', context=context, request=request)
+        html = HTML(string=html_string)
+        result = html.write_pdf()
+        
+        with tempfile.NamedTemporaryFile(delete=True) as output:
+            output.write(result)
+            output.flush()
+            output = open(output.name, 'rb')
+            response.write(output.read())
+        
+        return response

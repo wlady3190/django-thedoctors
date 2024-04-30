@@ -49,9 +49,11 @@ class CreatePatientImageListView(ListView, LoginRequiredMixin, UserPassesTestMix
     def get_context_data(self, **kwargs):
         patient_id = self.kwargs['pk']        
         patients_images = Patientimage.objects.filter(patient_id = patient_id)
+        patient = get_object_or_404(Patient, pk = patient_id)
         context = {
             'patients_images': patients_images,
-            'patient_id': patient_id
+            'patient_id': patient_id,
+            'patient': patient
         }
         return context
     
@@ -72,7 +74,7 @@ class UpdatePatientImageView(UpdateView, LoginRequiredMixin, UserPassesTestMixin
     model = Patientimage
     form_class = PatientImageForm
     template_name = 'patients_images/patients_images_form.html'
-    success_url = reverse_lazy('dashboard')
+
     
     # def test_func(self):
         
@@ -90,6 +92,10 @@ class UpdatePatientImageView(UpdateView, LoginRequiredMixin, UserPassesTestMixin
     def form_valid(self, form):
         messages.success(self.request, 'Set actualizado con éxito')
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        patient_id = self.kwargs['pk']
+        return reverse_lazy('images-repo-read', kwargs={'pk': patient_id})
  
  
 # todo Implementar Mixin    

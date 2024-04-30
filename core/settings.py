@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'appointment',
     'doctors',
     'patients',
-    'patients_images'
+    'patients_images',
+    'appointment_schedule'
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,11 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -155,17 +161,3 @@ LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = "homepage" 
 
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-        },
-    }
-}
