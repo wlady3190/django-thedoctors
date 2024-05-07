@@ -159,6 +159,14 @@ class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMix
     def test_func(self):
         medical_history = Medical_History.objects.get(user = self.request.user)
         return medical_history == self.get_object()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk = patient_id)
+        context['patient'] = patient
+        return context
+        
         
     
 
@@ -175,9 +183,7 @@ class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMix
     
     
     def get_object(self, queryset= None):
-        # patient_id = self.kwargs['pk']
         history_id = self.kwargs['pk']
-        # patient = get_object_or_404(Patient, pk = patient_id)
         history = get_object_or_404(Medical_History, pk = history_id)
         return history
         
@@ -222,6 +228,14 @@ class HistoryDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         medical_history = Medical_History.objects.get(user = self.request.user)
         return medical_history == self.get_object()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient_id = self.kwargs['pk']
+        patient = get_object_or_404(Patient, pk = patient_id)
+        context['patient'] = patient
+        return context
+        
 #  ELIMINAR HISTORIAL 
 
 # class HistoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):

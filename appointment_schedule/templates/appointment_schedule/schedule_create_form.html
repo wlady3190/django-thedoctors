@@ -10,16 +10,16 @@
     {% csrf_token %}
 
     <div class="form-group col-md-6">
-        <label for="nombre">Nombres</label>
+        <label for="name">Nombres</label>
         {{form.full_name|add_class:'form-control'}}
       </div>
 
       <div class="form-group col-md-6">
-        <label for="nombre">Nombres</label>
+        <label for="date">Fecha</label>
         {{form.appointment_date|add_class:'form-control'}}
       </div>
       <div class="form-group col-md-6">
-        <label for="nombre">Nombres</label>
+        <label for="time">Hora</label>
         {{form.appointment_time|add_class:'form-control'}}
       </div>
 

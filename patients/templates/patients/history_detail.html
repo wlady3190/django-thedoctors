@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="container m-4">
+<div class="container">
 
     <button class="button-add">
         <a href="{% url 'patient-read' %}">
@@ -20,52 +20,35 @@
       </button>
 
 
-<table class="table caption-top border border-success ">
     <h3 class="text-center">Antecedentes médicos del paciente</h3>
-    <thead>
-      <tr>
-        <th scope="col" class="col-4">Parámetro</th>
-        <th scope="col" class="col-8">Descripción</th>
-      </tr>
-    </thead>
-    <tbody>
-                  
-        
-        <tr scope = 'row'>
-            <th >Alergia</th>
-            <td>{{patients.allergy}}</td>
-        </tr>
-        <tr scope = 'row'>
-            <th>Enfermedades previas</th>
-            <td>{{patients.diseases}}</td>
 
-        </tr>
-        <tr scope = 'row'>
-            <th>Medicamentos </th>
-            <td>{{patients.medicines}}</td>
 
-        </tr>
-        <tr scope = 'row'>
-            <th>Información complementaria</th>
-            <td>{{patients.additional_info}}</td>
 
-        </tr>
-
-    </tbody>
-  </table>
+    <div class="card sticky-top w-75 mb-3">
+      <div class="card-body p-3">
+            <div class="d-flex flex-column h-100">
+              <h5 class="font-weight-bolder">DATOS DEL PACIENTE</h5>
+              <p class="mb-1 pt-2 text-bold">Nombre: {{patient.first_name}} {{patient.last_name}}</p>
+              <p class="mb-1 pt-2 text-bold">Fecha de nacimiento: {{patient.birthDate}}</p>
+              <p class="mb-1 pt-2 text-bold">Alergias: {{patients.allergy}}</p>
+              <p class="mb-1 pt-2 text-bold">Enfermedades previas: {{patients.diseases}}</p>
+              <p class="mb-1 pt-2 text-bold">Medicamentos: {{patients.medicines}}</p>
+              <p class="mb-1 pt-2 text-bold">Información adicional: {{patients.additional_info}}</p>
+              
+            </div>
+  
+      </div>
+    </div>
 
 
   <button class="button-add">
-
-
-
 
     <a href="{% url 'history-update' pk=patients.id %}">
         <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-              </svg> Editar
+              </svg> Editar  
         </span>
     </a>
   </button>

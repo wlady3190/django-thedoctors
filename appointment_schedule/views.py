@@ -32,6 +32,10 @@ class ListScheduleView(ListView):
     template_name = 'appointment_schedule/schedule_list.html'
     model = Schedule
     context_object_name = 'schedule_list'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user = self.request.user)
 
 
 class DeleteScheduleView(DeleteView):

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -98,9 +98,15 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
         context = super().get_context_data(**kwargs)
         patient_id = self.kwargs['pk']
         patient = get_object_or_404(Patient, pk = patient_id)
-        medical_history = get_object_or_404(Medical_History, pk = patient_id)
+        try:
+            medical_history = Medical_History.objects.get(patient = patient)
+        except Medical_History.DoesNotExist:    
+            medical_history = None
+            messages.error(self.request, 'Debe generar antecedentes médicos. Acciones > Crear antecedentes')
+            # raise Http404('No hay antecedentes médicos')
         context['patient'] = patient
         context['medical_history'] = medical_history
+        
         return context
         
     

@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os.path
+import os
 from pathlib import Path
+from dotenv import load_dotenv # type: ignore
+load_dotenv(override=True)
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-**497@m7c8%dj^7hicg7xkp9#-61)ar8$4=0lno9+s_-&y4a(-'
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +48,10 @@ INSTALLED_APPS = [
     'doctors',
     'patients',
     'patients_images',
-    'appointment_schedule'
+    'appointment_schedule',
+    'django_cleanup.apps.CleanupConfig', #clean updated/deleted files/photos
+    'storages', #! django-storages para aws
+
 ]
 
 MIDDLEWARE = [
@@ -61,6 +70,8 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+
+        
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -82,22 +93,29 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "thedoctorsDB",
-        "USER": "admin",
-        "PASSWORD": "password123",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
+      "ENGINE": "django.db.backends.postgresql",
+      "NAME": "thedoctorsDB",
+      "USER": "admin",
+      "PASSWORD": "password123",
+      "HOST": "127.0.0.1",
+      "PORT": "5432",
+  }
 }
 
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#     "default": {
+#         "ENGINE":os.getenv('ENGINE'),
+#         "NAME": os.getenv('NAME'),
+#         "USER": os.getenv('USER'),
+#         "PASSWORD": os.getenv('PASSWORD'),
+#         "HOST": os.getenv('HOST'),
+#         "PORT": os.getenv('PORT'),
 #     }
 # }
 
+
+#! atomicidad datos
+DATABASES['default']['ATOMIC_REQUESTS'] = True 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -161,3 +179,37 @@ LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = "homepage" 
 
+#! aws
+
+STORAGES = {
+    #* Media file management
+    "default" :{
+        'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
+    },
+    #* css y js
+    "staticfiles":{
+        'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
+        
+    }
+}
+
+
+'''
+django-storages
+boto3
+crear bucket, generar politica, crear usuario, asigna S3AllPermision, generar 2 claves
+'''
+# DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+# STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_FILE_OVERWRITE = False
+
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')

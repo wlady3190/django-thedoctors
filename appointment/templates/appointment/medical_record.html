@@ -1,12 +1,14 @@
-{% extends 'dashboard/base.html' %} {% load static %} {% load custom_filters %}
-{% block css_extra %} {{block.super}} {% endblock css_extra %} 
+{% extends 'dashboard/base.html' %}
+ {% load static %} 
+ {% load custom_filters %}
+
 {% block content %}
 
 <div class="container-fluid row">
   {% for message in messages %} 
   
   {% if message.tags == 'success' %}
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert alert-success alert-dismissible fade show mb-2" role="alert">
     <strong>{{message}}</strong>
     <button
       type="button"
@@ -31,7 +33,13 @@
 
   {% else %}
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Ups! Ha habido un error al actualizar</strong>
+    <strong>Precaución: No se ha ingresado los antecedentes médicos.</strong><a href="{% url 'history-create' patient.id %}">
+      <button class="boton-cita">
+        Ir a la ficha
+    </button>
+    
+    
+    </a>
     <b
       ><button
         type="button"
@@ -217,6 +225,28 @@
   {% endblock content %} {% block js_extra %} {{block.super}}
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+  <style>
+    .boton-cita {
+  padding: 5px 40px;
+  border: 0;
+  margin-left: 2rem;
+  border-radius: 100px;
+  background-color: #474b4e;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.boton-cita:hover {
+  background-color: #515557;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+
+  </style>
 
   {% endblock js_extra %}
 

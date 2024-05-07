@@ -11,7 +11,7 @@ class Schedule (models.Model):
     appointment_time = models.TimeField(default=None, blank=True, null=True, verbose_name='hora_consulta')
     
     def __str__(self):
-        return f'cita {self.full_name}, fecha: {self.date_appointment}'
+        return f'cita {self.full_name}, fecha: {self.appointment_date}'
     
     class Meta:
         verbose_name = 'Schedule'
