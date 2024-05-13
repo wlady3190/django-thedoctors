@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv # type: ignore
 load_dotenv(override=True)
+import dj_database_url # type: ignore
 
 
 
@@ -29,9 +30,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
 
 
 # Application definition
@@ -91,28 +92,32 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-      "ENGINE": "django.db.backends.postgresql",
-      "NAME": "thedoctorsDB",
-      "USER": "admin",
-      "PASSWORD": "password123",
-      "HOST": "127.0.0.1",
-      "PORT": "5432",
-  }
-}
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE":os.getenv('ENGINE'),
-#         "NAME": os.getenv('NAME'),
-#         "USER": os.getenv('USER'),
-#         "PASSWORD": os.getenv('PASSWORD'),
-#         "HOST": os.getenv('HOST'),
-#         "PORT": os.getenv('PORT'),
-#     }
+#       "ENGINE": "django.db.backends.postgresql",
+#       "NAME": "thedoctorsDB",
+#       "USER": "admin",
+#       "PASSWORD": "password123",
+#       "HOST": "127.0.0.1",
+#       "PORT": "5432",
+#   }
 # }
 
+DATABASES = {
+    "default": {
+        "ENGINE":os.getenv('ENGINE'),
+        "NAME": os.getenv('NAME'),
+        "USER": os.getenv('USER'),
+        "PASSWORD": os.getenv('PASSWORD'),
+        "HOST": os.getenv('HOST'),
+        "PORT": os.getenv('PORT'),
+        "OPTIONS": {
+            "sslmode": "require" 
+        }
+    }
+}
+
+DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
 
 #! atomicidad datos
 DATABASES['default']['ATOMIC_REQUESTS'] = True 
@@ -181,17 +186,17 @@ LOGOUT_REDIRECT_URL = "homepage"
 
 #! aws
 
-STORAGES = {
-    #* Media file management
-    "default" :{
-        'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
-    },
-    #* css y js
-    "staticfiles":{
-        'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
+# STORAGES = {
+#     #* Media file management
+#     "default" :{
+#         'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
+#     },
+#     #* css y js
+#     "staticfiles":{
+#         'BACKEND':'storages.backends.s3boto3.S3StaticStorage', #! ALMACENAMIENTO AWS S3"
         
-    }
-}
+#     }
+# }
 
 
 '''

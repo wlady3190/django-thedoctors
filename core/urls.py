@@ -32,7 +32,7 @@ from appointment.views import custom_404_error
 handler404 = custom_404_error
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin-theokara-wlady3190-teeth-soft/', admin.site.urls),
     path('', home_view.home, name='homepage' ),
     path('register/', doctors_views.SignUpView.as_view(), name='register' ),
     path('login/', auth_views.LoginView.as_view(template_name = 'doctors/login.html'), name='login'),
