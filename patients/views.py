@@ -108,9 +108,7 @@ class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Patient
     template_name = 'patients/patients_confirm_delete.html'
     success_url =  reverse_lazy('patient-read')
-
-    
-    
+  
         #Evitar que doctores ajenos accedan a pacientes
     def test_func(self):
         patient  = self.get_object()
@@ -140,6 +138,7 @@ class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMix
     model = Medical_History
     #fields = ['allergy', 'diseases', 'medicines', 'additional_info']
     form_class = PatientClinicalHistoryForm
+    success_url = reverse_lazy('patient-read')
 
     
     

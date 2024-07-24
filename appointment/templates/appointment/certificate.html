@@ -15,23 +15,20 @@
         <img src="https://res.cloudinary.com/dfawifqvs/image/upload/v1714260679/encabezado-certificado_l3lmhs.png" alt="imagen">
     </div>
 
-   
-
-         
+           
 
     <h3 class="date">Quito, {{appointment.appointment_date_generated|date:'d-m-Y'}}</h3>
 
     <h1 class="title">CERTIFICADO</h1>
 <p class="parrafo">
+    Certifico que el(la) Sr(ita)(a). {{patient.first_name}} {{patient.last_name}}, con CI. {{patient.identification}}, HCL: 000{{patient.id}}. Dirección: {{patient.address}}. TELEFONO: {{patient.phone}}. Fue valorado y tratado en mi consulta particular el día de hoy,
+    por DIAGNOSTICO: {{appointment.diagnoses}} (código CIE10: {{appointment.cie10_code}})
+</p> 
+    <p class="parrafo2">Dentro del diagnóstico a detalle del paciente se tiene: {{appointment.diagnoses_complications}}. <br> 
 
-    Certifico que el(la) Sr(ita)(a). {{patient.first_name}} {{patient.last_name}}, con CI.{{patient.identification}}, HCL: 000{{patient.id}}. Dirección: {{patient.address}}. TELEFONO: {{patient.phone}}. Fue valorado y tratado en mi consulta particular el día de hoy,
-    por DIAGNOSTICO: {{appointment.diagnosis_type}} CIE10: {{appointment.cie10_code}}.
-</p>
-    
-    
-    <p class="parrafo2">Se envían indicaciones, {{appointment.dianoses}} {{appointment.diagnoses_complications}}. <br> Es
-        todo cuanto puedo certificar en honor a la verdad. El portador puede hacer
-        uso del presente documento en lo que estimare conveniente.
+      Se realizaron los siguientes procedimientos: {{appointment.procedures}}
+       <br> <br><br><br><br>
+      Es todo cuanto puedo certificar en honor a la verdad. El portador puede hacer uso del presente documento en lo que estimare conveniente.
     </p>
 
     
@@ -47,7 +44,6 @@
 </div>
 
 
-    
 
     
 

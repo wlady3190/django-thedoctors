@@ -32,8 +32,6 @@ class Doctor (models.Model):
         auto_now=True, verbose_name="fecha_actualizacion_doctor")
 
 
-# a partir de esto se crea lo signasl para la creación correcta de perfiles
-
     def __str__(self):
         return f'{self.user} Doctor'
 
@@ -46,6 +44,8 @@ class Doctor (models.Model):
         super().save(*args, **kwargs)
         
         img = Image.open(self.photo.path)
+        if img.mode =='RGBA':
+            img = img.convert('RGB')
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)

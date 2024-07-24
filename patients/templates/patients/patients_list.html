@@ -71,7 +71,6 @@
             <td> {{patient.age}}</td>
             <td>{{patient.phone}}</td>
             <td class="d-flex justify-content-evenly">
-
                 <div class="dropdown">
                     <button class="btn btn-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                       Acciones <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
@@ -87,10 +86,7 @@
                          {% else %}
                       <li><a class="dropdown-item" href="{% url 'history-create' patient.id %}">Crear antecedentes</a></li>
                      {% endif %} 
-
                     </ul>
-
-
                   </div>
 
                   <div class="dropdown">
@@ -103,9 +99,7 @@
                       <li><a class="dropdown-item" href="{% url 'appointment-read-list' patient.id %}">Ver citas</a></li>
                       <li><a class="dropdown-item" href="{% url 'appointment-create' patient.id %}">Nueva cita</a></li>
                     </ul>
-
                   </div>
-
 
                   <div class="dropdown">
                     <button class="btn btn-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -114,15 +108,10 @@
                       </svg>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <!-- <li><a class="dropdown-item" href="{% url 'appointment-read-list' patient.id %}">Ver sesiones</a></li> -->
                       <li><a class="dropdown-item" href="{% url 'images-repo-create' patient.id %}">Cargar imágenes</a></li>
                       <li><a class="dropdown-item" href="{% url 'images-repo-read' patient.id %}">Ver imágenes</a></li>
-
                     </ul>
-
                   </div>
-
-
             </td>
 
         </tr>
@@ -167,7 +156,6 @@
           targets: 3,
           orderable: false,
       },
-
   ],
         autowidth: false,
         columns: [{ width: '25%' }, { width: '5%' }, { width: '10%' }, { width: '60%' }],

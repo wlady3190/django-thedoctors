@@ -19,8 +19,6 @@ class CreatePatientImageView(CreateView, LoginRequiredMixin, UserPassesTestMixin
     template_name = 'patients_images/patients_images_form.html'
     form_class = PatientImageForm
     model = Patientimage
-    success_url = reverse_lazy('patient-read')
-
     
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -34,9 +32,10 @@ class CreatePatientImageView(CreateView, LoginRequiredMixin, UserPassesTestMixin
         queryset = super().get_queryset()
         return queryset.filter(user = self.request.user)
     
-    # def test_func(self):
-    #     appointment = Appointment.objects.get(user= self.request.user) 
-    #     return appointment == self.get_object()
+    def get_success_url(self):
+        patient_id = self.kwargs['pk']
+        return reverse_lazy('images-repo-read', kwargs={'pk': patient_id})
+    
 
 # ! Ver listado de imagenes por paciente
 class CreatePatientImageListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
@@ -66,6 +65,8 @@ class CreatePatientImageListView(ListView, LoginRequiredMixin, UserPassesTestMix
         patient_id = self.kwargs.get('pk')
         patient = get_object_or_404(Patient, patient_id)
         return patient == self.request.user
+    
+
 
 
 #! Ver y actualizar set de imagenes por ID

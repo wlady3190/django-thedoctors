@@ -78,16 +78,13 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
     template_name = 'appointment/medical_record.html'
     form_class = AppointmentForm
     model = Appointment
-    success_url = reverse_lazy('patient-read')
-
-    
     
     def form_valid(self, form):
         form.instance.user = self.request.user
         patient_id = self.kwargs['pk']
         patient = get_object_or_404(Patient, pk = patient_id)
         form.instance.patient = patient
-        messages.success(self.request, 'Cita médica generada con éxito')
+        messages.success(self.request, 'Sesión médica generada con éxito')
         return super().form_valid(form)
     
     def get_queryset(self):
@@ -103,18 +100,15 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
         except Medical_History.DoesNotExist:    
             medical_history = None
             messages.error(self.request, 'Debe generar antecedentes médicos. Acciones > Crear antecedentes')
-            # raise Http404('No hay antecedentes médicos')
         context['patient'] = patient
         context['medical_history'] = medical_history
         
         return context
+    
+    def get_success_url(self):
+        patient_id = self.kwargs['pk']
+        return reverse_lazy('appointment-read-list', kwargs={'pk': patient_id})
         
-    
-    
-    
-    # def test_func(self):
-    #     appointment = Appointment.objects.get(user= self.request.user) 
-    #     return appointment == self.get_object()
 
 class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'appointment/appointment_list.html'
@@ -124,11 +118,14 @@ class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPasse
     
     
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         patient_id = self.kwargs['pk']        
         appointments = Appointment.objects.filter(patient_id = patient_id)
+        patient = get_object_or_404(Patient, pk=patient_id)
         context = {
+            'patient_id': patient_id,
             'appointments': appointments,
-            'patient_id': patient_id
+            'patient': patient
         }
         return context
     
@@ -148,13 +145,11 @@ class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPasse
 class ExportPDFView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Appointment
     
-    
     def get_object(self):
         patient_id = self.kwargs['pk']
         pk_appointment = self.kwargs['pk_appointment']
         return get_object_or_404(Appointment, patient_id=patient_id, id = pk_appointment)
     
-   
     def get(self, request, *args, **kwargs):
         user = request.user
         doctor = Doctor.objects.filter(user = user)
@@ -166,9 +161,7 @@ class ExportPDFView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
             'patient': patient,
             'doctor': doctor,
             'user': user, 
-
         }
-
         
         response = HttpResponse(content_type="application/pdf")
         today_date = date.today().strftime("%Y-%m-%d")
@@ -185,5 +178,4 @@ class ExportPDFView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
             output.flush()
             output = open(output.name, 'rb')
             response.write(output.read())
-        
         return response

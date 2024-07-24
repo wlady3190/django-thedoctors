@@ -32,12 +32,15 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',#! cloudinary
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
     'appointment_schedule',
     'django_cleanup.apps.CleanupConfig', #clean updated/deleted files/photos
     'storages', #! django-storages para aws
+    'cloudinary' 
 
 ]
 
@@ -171,6 +175,7 @@ STATIC_URL = 'static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -185,10 +190,21 @@ LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = "homepage" 
 
-#! Para ejecución en Render
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Duración de sesiones en segundos
+SESSION_COOKIE_AGE = 86400
 
-STATIC_ROOT = 'staticfiles'
+#! Cloudinary
+
+# CLOUDINARY_STORAGE ={
+#     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+#     'API_KEY':os.getenv('API_KEY'),
+#     'API_SECRET': os.getenv('API_SECRET'),    
+# }
+
+#! Para ejecución en Cloudinary dearchivos estáticos
+# STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+
+# STATIC_ROOT = 'staticfiles'
 
 
 # aws
