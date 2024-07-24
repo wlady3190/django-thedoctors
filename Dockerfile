@@ -4,7 +4,7 @@ RUN pip install --upgrade pip
 
 COPY ./requirements.txt .
 
-COPY ./TESIS /app
+COPY ./core /app
 
 WORKDIR /app
 
