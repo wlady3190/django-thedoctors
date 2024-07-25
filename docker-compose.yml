@@ -4,9 +4,10 @@ services:
   django_gunicorn:
     build:
       context: .
+    restart: always
     volumes:
-      - static:/static
-      - media:/media
+      - static-data:/vol/static
+      - media-data:/vol/media
     env_file:
       - core/.env
     ports:
@@ -14,9 +15,10 @@ services:
 
   nginx:
     build: ./nginx
+    restart: always
     volumes:
-      - static:/static
-      - media:/media
+      - static-data:/vol/static
+      - media-data:/vol/media
 
     ports:
       - "80:80"
@@ -25,8 +27,8 @@ services:
 
 
 volumes:
-  static:
-  media:
+  static-data:
+  media-data:
 
 
 

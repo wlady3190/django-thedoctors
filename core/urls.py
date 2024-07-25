@@ -38,7 +38,4 @@ urlpatterns = [
     path('register/', doctors_views.SignUpView.as_view(), name='register' ),
     path('login/', auth_views.LoginView.as_view(template_name = 'doctors/login.html'), name='login'),
     path('dashboard/', include('appointment.urls'), name='dashboard')
-]
-
-if settings.DEBUG:
-    urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
