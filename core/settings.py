@@ -166,14 +166,19 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT = '/static/'
-STATIC_URL = '/static/'
+
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'appointment', 'static'),
+    os.path.join(BASE_DIR,'doctors', 'static'),
+    os.path.join(BASE_DIR,'homepage', 'static'),
+    os.path.join(BASE_DIR,'patients_images', 'static'),  
+    
+]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

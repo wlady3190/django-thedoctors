@@ -1,19 +1,23 @@
-version: '1.29.2'
+version: '3.7'
 
 services:
   django_gunicorn:
-    volumes:
-      - static:/static
-    env_file:
-      - .core/env
     build:
       context: .
+    volumes:
+      - static:/static
+      - media:/media
+    env_file:
+      - core/.env
     ports:
       - "8000:8000"
+
   nginx:
     build: ./nginx
     volumes:
       - static:/static
+      - media:/media
+
     ports:
       - "80:80"
     depends_on:
@@ -22,6 +26,7 @@ services:
 
 volumes:
   static:
+  media:
 
 
 
