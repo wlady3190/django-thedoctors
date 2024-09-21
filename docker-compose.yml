@@ -6,8 +6,8 @@ services:
       context: .
     restart: always
     volumes:
-      - static-data:/vol/static
-      - media-data:/vol/media
+      - staticfiles:/app/staticfiles
+      - media:/app/media
     env_file:
       - core/.env
     ports:
@@ -17,9 +17,8 @@ services:
     build: ./nginx
     restart: always
     volumes:
-      - static-data:/vol/static
-      - media-data:/vol/media
-
+      - staticfiles:/app/staticfiles
+      - media:/app/media
     ports:
       - "80:80"
     depends_on:
@@ -27,8 +26,8 @@ services:
 
 
 volumes:
-  static-data:
-  media-data:
+  staticfiles:
+  media:
 
 
 

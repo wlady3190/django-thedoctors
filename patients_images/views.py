@@ -1,3 +1,4 @@
+import os
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render
@@ -77,10 +78,6 @@ class UpdatePatientImageView(UpdateView, LoginRequiredMixin, UserPassesTestMixin
     template_name = 'patients_images/patients_images_form.html'
 
     
-    # def test_func(self):
-        
-    #     patient_image = self.get_object()
-    #     return self.request.user == patient_image.user
 
     def get_object(self, queryset=None):
         # user = self.request.user

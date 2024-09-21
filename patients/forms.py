@@ -13,13 +13,13 @@ class PatientProfileForm(forms.ModelForm):
         ('MASCULINE', "masculino"),
         ('FEMENINE', "femenino")
     ]
-    first_name = forms.CharField(max_length=150, validators=[letter_validator], widget=forms.TextInput(attrs={'placeholder': 'Juan Fernando', 'id': 'nombres'}))
-    last_name = forms.CharField(max_length=150,  validators=[letter_validator], widget=forms.TextInput(attrs={'id':'apellidos'}))
+    first_name = forms.CharField(max_length=150, validators=[letter_validator], widget=forms.TextInput(attrs={'placeholder': 'Juan Fernando'}))
+    last_name = forms.CharField(max_length=150,  validators=[letter_validator], widget=forms.TextInput(attrs={'placeholder': 'López Duarte'}))
     birthDate = forms.DateField(widget=DateInput, input_formats=settings.DATE_INPUT_FORMATS, required=False)
-    identification = forms.CharField(max_length=10, required=False)
-    address = forms.CharField(required=False)
-    email = forms.EmailField(required=False)
-    phone = forms.CharField(max_length=15, validators=[numeric_validator], required=False)
+    identification = forms.CharField(max_length=10, required=False, widget=forms.TextInput(attrs={'placeholder': '1700000001'}))
+    address = forms.CharField(required=False,widget=forms.TextInput(attrs={'placeholder': 'Quito, El Condado'}) )
+    email = forms.EmailField(required=False, widget=forms.TextInput(attrs={'placeholder': 'username@correo.com'}))
+    phone = forms.CharField(max_length=15, validators=[numeric_validator], required=False, widget=forms.TextInput(attrs={'placeholder': '0999999999'}))
     sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.RadioSelect(), required=False)
 
     class Meta:

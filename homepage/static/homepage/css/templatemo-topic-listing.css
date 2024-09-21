@@ -488,12 +488,15 @@ strong {
   HERO        
 -----------------------------------------*/
 .hero-section {
-  background-image: url('../images/businesswoman-using-tablet-analysis.jpg');
+  background-image: url('https://res.cloudinary.com/dfawifqvs/image/upload/v1722996955/the-doctors/IMG_1062_zpp5cb.jpg');
   position: relative;
   overflow: hidden;
   padding-top: 150px;
-  padding-bottom: 150px;
-  height: 100vh;
+  padding-bottom: 500px;
+  max-height: 100%;
+  width: 100%;
+  background-size: cover;
+
 }
 
 .hero-section .input-group {
@@ -733,7 +736,7 @@ blockquote {
   TIMELINE              
 -----------------------------------------*/
 .timeline-section {
-  background-image: url('../images/colleagues-working-cozy-office-medium-shot.jpg');
+
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

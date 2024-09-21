@@ -1,9 +1,12 @@
+import os
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import date
 from django.db.models.signals import post_save
 from PIL import Image
 from django.dispatch import receiver
+
+from core import settings
 
 
 # Regex para validar campos
@@ -50,7 +53,12 @@ class Doctor (models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.photo.path)
-            
+    
+    @property
+    def image_url(self):
+        if self.image and os.path.exists(self.image.path):
+            return self.image.url
+        return os.path.join(settings.MEDIA_URL, 'profile.png')
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):

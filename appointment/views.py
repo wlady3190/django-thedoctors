@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -32,6 +32,8 @@ from django.template.loader import render_to_string
 from weasyprint import HTML # type: ignore
 import tempfile
 from datetime import date, datetime
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 
 # Create your views here.
@@ -40,7 +42,7 @@ def custom_404_error(request, exception):
     return render(request, 'error_pages/error_404.html', status = 404 )
 
    
-
+# @method_decorator(never_cache, name='dispatch') 
 class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
     def get(self, request):
         user = request.user
@@ -61,11 +63,13 @@ class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
         return render(request, 'dashboard/dashboard.html', context)
     
     # def test_func(self):
-    #     patient = Patient.objects.get(user = self.request.user)
-    #     return patient == self.get_object()
+    #     return self.request.user.is_authenticated
 
-
-    
+    # def handle_no_permission(self):
+    #     if self.request.user.is_authenticated:
+    #         return HttpResponseForbidden("You do not have permission to view this page.")
+    #     else:
+    #         return redirect('login')
 
 
 @login_required

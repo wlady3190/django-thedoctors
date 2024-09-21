@@ -40,12 +40,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'cloudinary_storage',#! cloudinary
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
     'homepage',
     'appointment',
@@ -55,8 +56,8 @@ INSTALLED_APPS = [
     'appointment_schedule',
     'django_cleanup.apps.CleanupConfig', #clean updated/deleted files/photos
     'storages', #! django-storages para aws
-    'cloudinary' 
-
+    'cloudinary_storage',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'doctors.middleware.SQLInjectionMiddleware', # para evitar DDoS
+    # 'doctors.middleware.LoginRequiredMiddleware', 
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -176,23 +178,49 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR,'appointment', 'static'),
-    os.path.join(BASE_DIR,'doctors', 'static'),
-    os.path.join(BASE_DIR,'homepage', 'static'),
-    os.path.join(BASE_DIR,'patients_images', 'static'),  
+
+    # BASE_DIR/"static/",
+    BASE_DIR/"appointment/static",
+    BASE_DIR/"doctors/static",
+    BASE_DIR/"homepage/static",
+    BASE_DIR/"patients_images/static",
+    
+    
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = "/app/staticfiles/"
+# STATIC_ROOT = BASE_DIR/"static/"
 
-STATIC_URL = 'static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = '/app/media/'
+# MEDIA_ROOT = BASE_DIR/'media/'
+
+
+MEDIA_URL = '/media/'
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#! Cloudinary
+
+CLOUDINARY_STORAGE ={
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY':os.getenv('API_KEY'),
+    'API_SECRET': os.getenv('API_SECRET'),    
+}
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -201,19 +229,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'dashboard'
 
 LOGIN_URL = 'login'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_COOKIE_AGE = 0
 
 LOGOUT_REDIRECT_URL = "homepage" 
 
 # Duración de sesiones en segundos
 SESSION_COOKIE_AGE = 86400
 
-#! Cloudinary
 
-# CLOUDINARY_STORAGE ={
-#     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
-#     'API_KEY':os.getenv('API_KEY'),
-#     'API_SECRET': os.getenv('API_SECRET'),    
-# }
 
 #! Para ejecución en Cloudinary dearchivos estáticos
 # STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'

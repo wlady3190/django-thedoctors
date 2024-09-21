@@ -68,9 +68,9 @@ class SignUpView(CreateView):
 #     return render(request, 'dashboard/profile.html', context)
 
 class ProfileUpdateView (LoginRequiredMixin, UpdateView):
-    template_name = 'appointment/profile.html'  # Reemplaza 'your_template.html' con el nombre de tu template
+    template_name = 'appointment/profile.html'  
     model = Doctor
-    form_class = UserAndProfileUpdateForm  # Reemplaza 'ProfileUpdateForm' con el nombre de tu formulario de actualización
+    form_class = UserAndProfileUpdateForm  
 
 
     def get_object(self, queryset=None):

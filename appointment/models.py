@@ -20,17 +20,17 @@ class Appointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE)
-    appointment_date_generated = models.DateField(verbose_name='fecha_cita_medica', default=date.today)
+    appointment_date_generated = models.DateField(verbose_name='fecha_cita_medica', default=date.today, )
     # !Signos vitales
     blood_pressure = models.CharField(
-        max_length=7, verbose_name='presion_arterial', default=0, blank=True)
+        max_length=7, verbose_name='presion_arterial', default=0, blank=True, null=True)
     heart_rate = models.PositiveSmallIntegerField(
-        default=0,  verbose_name='frecuencia_cardiaca', blank=True)
-    temperature = PositiveDecimalField(default=0.0, verbose_name='temperatura', decimal_places=1, max_digits=3, blank=True)
+        default=0,  verbose_name='frecuencia_cardiaca', blank=True, null=True)
+    temperature = PositiveDecimalField(default=0.0, verbose_name='temperatura', decimal_places=1, max_digits=3, blank=True, null=True)
     breathing_frequency = models.PositiveSmallIntegerField(
-        default=0, verbose_name='frecuencia_respiratoria', blank=True)
+        default=0, verbose_name='frecuencia_respiratoria', blank=True, null=True)
     oxygen_saturation = models.PositiveSmallIntegerField(
-        default=0, verbose_name='saturacion_oxigeno', blank=True)
+        default=0, verbose_name='saturacion_oxigeno', blank=True, null=True)
 
     # ! Diagnóstico
     DIAGNOSIS_TYPE = [
@@ -38,15 +38,15 @@ class Appointment(models.Model):
         ('DEF', 'definitivo')]
    
     diagnosis_type = models.CharField(
-        choices=DIAGNOSIS_TYPE, verbose_name='diagnostico_tipo', max_length=25, blank=True)
+        choices=DIAGNOSIS_TYPE, verbose_name='diagnostico_tipo', max_length=25, blank=True, default="PRE")
     cie10_code = models.CharField(
-        max_length=6, verbose_name='codigo_cie_10_odontologico', blank=True)
-    diagnoses = models.TextField(blank=True, verbose_name='Diagnóstico')
+        max_length=6, verbose_name='codigo_cie_10_odontologico', blank=True, default='Z012')
+    diagnoses = models.TextField(blank=True, verbose_name='Diagnóstico', default='Examen odontológico')
 
     #! Complicaciones
-    diagnoses_complications = models.TextField(verbose_name='diagnostico_complicaciones', blank=True)
-    procedures = models.TextField(verbose_name='procedimientos', blank=True)
-    prescriptions = models.TextField(verbose_name='prescripciones', blank=True)
+    diagnoses_complications = models.TextField(verbose_name='diagnostico_complicaciones', blank=True, null=True)
+    procedures = models.TextField(verbose_name='procedimientos', blank=True, null=True)
+    prescriptions = models.TextField(verbose_name='prescripciones', blank=True, null=True)
     created = models.DateTimeField(
         auto_now_add=True, verbose_name="fecha_creacion")
     updated = models.DateTimeField(
