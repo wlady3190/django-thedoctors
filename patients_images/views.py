@@ -11,11 +11,14 @@ from.models import Patientimage
 from patients.models import Patient
 from django.contrib import messages
 import logging
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 
 
 # ! Crear set de imagenes por paciente
+@method_decorator(never_cache, name='dispatch') 
 class CreatePatientImageView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'patients_images/patients_images_form.html'
     form_class = PatientImageForm
@@ -39,6 +42,7 @@ class CreatePatientImageView(CreateView, LoginRequiredMixin, UserPassesTestMixin
     
 
 # ! Ver listado de imagenes por paciente
+@method_decorator(never_cache, name='dispatch') 
 class CreatePatientImageListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'patients_images/patient_images_list.html'
     model = Patientimage
@@ -71,7 +75,7 @@ class CreatePatientImageListView(ListView, LoginRequiredMixin, UserPassesTestMix
 
 
 #! Ver y actualizar set de imagenes por ID
-
+@method_decorator(never_cache, name='dispatch') 
 class UpdatePatientImageView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Patientimage
     form_class = PatientImageForm
@@ -101,7 +105,7 @@ class UpdatePatientImageView(UpdateView, LoginRequiredMixin, UserPassesTestMixin
     #     medical_history = Medical_History.objects.get(user = self.request.user)
     #     return medical_history == self.get_object()
     
-
+@method_decorator(never_cache, name='dispatch') 
 class DeletePatientImageView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Patientimage
     template_name = 'patients_images/patient_images_confirm_delete.html'
@@ -122,12 +126,4 @@ class DeletePatientImageView(DeleteView, LoginRequiredMixin, UserPassesTestMixin
         return reverse_lazy('images-repo-read', kwargs={'pk': patient_id})
     
     
-    
-    
-        #Evitar que doctores ajenos accedan a pacientes
-    # def test_func(self):
-    #     patient  = self.get_object()
-    #     if self.request.user == patient.doctor:
-    #         return True
-    #     return False
     

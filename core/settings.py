@@ -101,26 +101,26 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # DATABASES = {
 #     "default": {
-#       "ENGINE": "django.db.backends.postgresql",
-#       "NAME": "thedoctorsDB",
-#       "USER": "admin",
-#       "PASSWORD": "password123",
-#       "HOST": "127.0.0.1",
-#       "PORT": "5432",
+#       "ENGINE":"django.db.backends.postgresql",
+#       "NAME":"thedoctorsDB",
+#       "USER":"admin",
+#       "PASSWORD":"password123",
+#       "HOST":"db",
+#       "PORT":"5432",
 #   }
 # }
 
 DATABASES = {
     "default": {
-        "ENGINE":os.getenv('ENGINE'),
-        "NAME": os.getenv('NAME'),
-        "USER": os.getenv('USER'),
-        "PASSWORD": os.getenv('PASSWORD'),
-        "HOST": os.getenv('HOST'),
-        "PORT": os.getenv('PORT'),
-        "OPTIONS": {
-            "sslmode": "require" 
-        }
+        # "ENGINE":os.getenv('ENGINE'),
+        # "NAME": os.getenv('NAME'),
+        # "USER": os.getenv('USER'),
+        # "PASSWORD": os.getenv('PASSWORD'),
+        # "HOST": os.getenv('HOST'),
+        # "PORT": os.getenv('PORT'),
+        # "OPTIONS": {
+        #     "sslmode": "require" 
+        # }
     }
 }
 
@@ -209,16 +209,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #! Cloudinary
 
-CLOUDINARY_STORAGE ={
-    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
-    'API_KEY':os.getenv('API_KEY'),
-    'API_SECRET': os.getenv('API_SECRET'),    
-}
+# CLOUDINARY_STORAGE ={
+#     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+#     'API_KEY':os.getenv('API_KEY'),
+#     'API_SECRET': os.getenv('API_SECRET'),    
+# }
 
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# if not DEBUG:
+#     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# else:
+#     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 
 

@@ -1,66 +1,28 @@
-version: '3.7'
-
 services:
   django_gunicorn:
     build:
       context: .
     restart: always
     volumes:
-      - staticfiles:/app/staticfiles
-      - media:/app/media
+      - staticfiles:/app/staticfiles  # Volumen para archivos estáticos
+      - media:/app/media  # Volumen para archivos de medios
     env_file:
       - core/.env
     ports:
-      - "8000:8000"
+      - "8000:8000"  # Puerto de Gunicorn (Django)
 
   nginx:
     build: ./nginx
     restart: always
     volumes:
-      - staticfiles:/app/staticfiles
-      - media:/app/media
+      - staticfiles:/app/staticfiles  # Volumen compartido para estáticos
+      - media:/app/media  # Volumen compartido para archivos de medios
     ports:
-      - "80:80"
+      - "80:80"  # Puerto 80 para Nginx
     depends_on:
-      - django_gunicorn
-
+      - django_gunicorn  # Asegura que Gunicorn se levante antes de Nginx
 
 volumes:
   staticfiles:
   media:
 
-
-
-# version: "3.3"
-
-# services:
-#   db:
-#     image: postgres:13-alpine
-#     container_name: database
-#     restart: always
-#     environment:
-#       POSTGRES_DB: postgres
-#       POSTGRES_USER: admin
-#       POSTGRES_PASSWORD: password123
-#     volumes:
-#       - /var/lib/postgresql/data
-#     ports:
-#       - 5432:5432
-#   pgadmin:
-#     image: dpage/pgadmin4
-#     container_name: pgAdmin
-#     restart: always
-#     environment:
-#       PGADMIN_DEFAULT_EMAIL: admin@nestjs.com
-#       PGADMIN_DEFAULT_PASSWORD: password123
-#       PGADMIN_LISTEN_PORT: 80
-#     ports:
-#       - 8080:80
-#     volumes:
-#       - /var/lib/pgadmin
-#     depends_on:
-#       - db
-
-# volumes:
-#   postgres_data:
-#   pgadmin_data:

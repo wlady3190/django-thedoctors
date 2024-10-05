@@ -42,7 +42,7 @@ def custom_404_error(request, exception):
     return render(request, 'error_pages/error_404.html', status = 404 )
 
    
-# @method_decorator(never_cache, name='dispatch') 
+@method_decorator(never_cache, name='dispatch') 
 class HomeView(View, LoginRequiredMixin, UserPassesTestMixin):
     def get(self, request):
         user = request.user
@@ -77,7 +77,7 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-
+@method_decorator(never_cache, name='dispatch') 
 class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'appointment/medical_record.html'
     form_class = AppointmentForm
@@ -113,7 +113,7 @@ class CreateAppointmentView(CreateView, LoginRequiredMixin, UserPassesTestMixin)
         patient_id = self.kwargs['pk']
         return reverse_lazy('appointment-read-list', kwargs={'pk': patient_id})
         
-
+@method_decorator(never_cache, name='dispatch') 
 class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'appointment/appointment_list.html'
     model = Appointment
@@ -145,7 +145,7 @@ class CreateAppointmentByPatientListView(ListView, LoginRequiredMixin, UserPasse
     
 # ! Generación de pdf
 
-
+@method_decorator(never_cache, name='dispatch') 
 class ExportPDFView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Appointment
     

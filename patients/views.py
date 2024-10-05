@@ -14,12 +14,13 @@ from patients.forms import PatientProfileForm,  PatientClinicalHistoryForm
 from patients.models import Medical_History, Patient
 from core.utils import test_func
 # Create your views here.
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 
 # * CRUD PACIENTES
 # * CREAR PACIENTES
-
+@method_decorator(never_cache, name='dispatch') 
 class CreatePatientsView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
     template_name = 'patients/patients_form.html'
     model = Patient
@@ -46,7 +47,7 @@ class CreatePatientsView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
         return patient == self.get_object()
 
 # * ACTUALIZAR PACIENTES
-
+@method_decorator(never_cache, name='dispatch') 
 class UpdatePatientsView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'patients/patients_form.html'
     model = Patient
@@ -72,7 +73,7 @@ class UpdatePatientsView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     
 
 # * LISTAR TODOS LOS PACIENTES 
-
+@method_decorator(never_cache, name='dispatch') 
 class ReadPatientsView(ListView,LoginRequiredMixin, UserPassesTestMixin):
     model = Patient
     template_name = 'patients/patients_list.html'
@@ -103,7 +104,7 @@ class ReadPatientsView(ListView,LoginRequiredMixin, UserPassesTestMixin):
     
         
     
-# * BORRAR PACIENTE
+@method_decorator(never_cache, name='dispatch') 
 class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Patient
     template_name = 'patients/patients_confirm_delete.html'
@@ -132,7 +133,7 @@ class DeletePatientView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     
 # ! HISTORIAL MEDICO **
 # * CREAR HISTORIAL
-
+@method_decorator(never_cache, name='dispatch') 
 class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMixin ):
     template_name = 'patients/history_form.html'
     model = Medical_History
@@ -171,7 +172,7 @@ class CreateMedicalHistoryView(CreateView, LoginRequiredMixin, UserPassesTestMix
 
 # * ACTUALIZAR HISTORIA MEDICA
 
-
+@method_decorator(never_cache, name='dispatch') 
 class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = 'patients/history_form.html'
     model = Medical_History
@@ -206,7 +207,7 @@ class UpdateMedicalHistoryView(UpdateView, LoginRequiredMixin, UserPassesTestMix
     #     return medical_history == self.get_object()
     
 # #  LISTAR HISTORIAL
-
+@method_decorator(never_cache, name='dispatch') 
 class HistoryDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Medical_History
     template_name = 'patients/history_detail.html'
@@ -235,23 +236,5 @@ class HistoryDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
         context['patient'] = patient
         return context
         
-#  ELIMINAR HISTORIAL 
 
-# class HistoryDeleteView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
-#     model = Medical_History
-#     success_url = 'patients/patients_list.html'
-    
-#         #Evitar que doctores ajenos accedan a pacientes
-#     def test_func(self):
-#         patient  = self.get_object()
-#         if self.request.user == patient.doctor:
-#             return True
-#         return False
-    
-#     def delete(self, request, *args, **kwargs):
-#         messages.success(request, 'Registro eliminado con éxito')
-#         return super().delete(request, *args, **kwargs)
-
-    
-    
 

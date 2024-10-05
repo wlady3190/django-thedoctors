@@ -7,11 +7,12 @@ from django.views.generic import CreateView, DeleteView, ListView
 from appointment_schedule.forms import CreateScheduleForm
 from appointment_schedule.models import Schedule
 from django.contrib import messages
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 
-
+@method_decorator(never_cache, name='dispatch') 
 class CreateScheduleView(CreateView):
     template_name = 'appointment_schedule/schedule_create_form.html'
     model = Schedule
@@ -27,7 +28,8 @@ class CreateScheduleView(CreateView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(user = self.request.user)
-
+    
+@method_decorator(never_cache, name='dispatch') 
 class ListScheduleView(ListView):
     template_name = 'appointment_schedule/schedule_list.html'
     model = Schedule
@@ -37,7 +39,7 @@ class ListScheduleView(ListView):
         queryset = super().get_queryset()
         return queryset.filter(user = self.request.user)
 
-
+@method_decorator(never_cache, name='dispatch') 
 class DeleteScheduleView(DeleteView):
     model = Schedule
     template_name = 'appointment_schedule/schedule_confirm_delete.html'
