@@ -27,8 +27,6 @@ class SignUpView(CreateView):
     template_name = 'doctors/register.html'
 
 
-
-
 @method_decorator(never_cache, name='dispatch') 
 class ProfileUpdateView (LoginRequiredMixin, UpdateView):
     template_name = 'appointment/profile.html'  

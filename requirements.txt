@@ -10,10 +10,10 @@ chardet==5.2.0
 charset-normalizer==3.3.2
 click==8.1.7
 cloudinary==1.40.0
-cryptography==42.0.5
+cryptography==43.0.1
 cssselect2==0.7.0
 dj-database-url==2.1.0
-Django==5.0.7
+Django==5.0.8
 django-cleanup==8.1.0
 django-cloudinary-storage==0.3.0
 django-storages==1.14.3
